@@ -138,7 +138,8 @@ class GenerateBill{
 
     ![Sample Output](/images/factorymethodoutput.jpg)
 
-- [Source Code Download](/src/factorymethodpattern.zip)
+- [Source Code Download](/src/factorymethodpattern.zip?raw=true)
+
 ### 1.2 Abstract Factory Pattern
 Abstract Factory Pattern says that just **`define an interface or abstract class for creating families of related (or dependent) objects but without specifying their concrete sub-classes`**.That means Abstract Factory lets a class returns a factory of classes. So, this is the reason that Abstract Factory Pattern is one level higher than the Factory Pattern.
 An Abstract Factory Pattern is also known as `Kit`.
@@ -356,7 +357,7 @@ class AbstractFactoryPatternExample {
 
 ![abstractfactory](/images/abstractfactoryoutput.jpg)
 
-- [download this Abstract Factory Pattern Example](/src/abstractfactorypattern.zip)
+- [download this Abstract Factory Pattern Example](/src/abstractfactorypattern.zip?raw=true)
 
 ### 1.3 Singleton Pattern
 Singleton Pattern says that just **`define a class that has only one instance and provides a global point of access to it`**.
@@ -731,7 +732,7 @@ class JDBCSingletonDemo {
 }  
 ```
 
-- [download this Singleton Pattern Example](/src/singleton.zip)
+- [download this Singleton Pattern Example](/src/singleton.zip?raw=true)
 - Ouput
 
 ![Ouput 1](images/singletonoutput1.jpg)
@@ -857,7 +858,7 @@ class PrototypeDemo {
     }
 }//End of the ProtoypeDemo class.  
 ```
-- [download this Prototype Pattern Example](src/PrototypePattern.zip)
+- [download this Prototype Pattern Example](src/PrototypePattern.zip?raw=true)
 - Output
 
 ![prototypeoutput](images/prototypeoutput.jpg)
@@ -999,7 +1000,7 @@ public class BuilderDemo {
     }
 }  
 ```
-#### [download this builder pattern example](src/builder1.zip)
+#### [download this builder pattern example](src/builder1.zip?raw=true)
 
 #### Output of the above example
 ```java
@@ -1885,7 +1886,7 @@ public class BuilderDemo {
 }// End of the BuilderDemo class
 ```
 
-#### [download this Builder Pattern Example](src/5-Builderpattern.zip)
+#### [download this Builder Pattern Example](src/5-Builderpattern.zip?raw=true)
 
 #### Output
 
@@ -2174,7 +2175,7 @@ public class ObjectPoolDemo {
 }//End of the ObjectPoolDemo class.  
 ```
 
-#### [download this Object Pool Pattern Example](src/objectpoolpattern.zip)
+#### [download this Object Pool Pattern Example](src/objectpoolpattern.zip?raw=true)
 
 #### Output
 
@@ -2352,7 +2353,7 @@ public class AdapterPatternDemo {
 }//End of the BankCustomer class.  
 ```
 
-#### [download this example](src/adapterpattern.zip)
+#### [download this example](src/adapterpattern.zip?raw=true)
 
 #### Output
 
@@ -2548,7 +2549,7 @@ public class BridgePatternDemo {
 }// End of the BridgePatternDemo class.
 ```
 
-#### [download this Bridge Pattern Example](src/bridgepattern.zip)
+#### [download this Bridge Pattern Example](src/bridgepattern.zip?raw=true)
 
 #### Output
 ```
@@ -2862,7 +2863,7 @@ public class CompositePatternDemo {
     }
 }
 ```
-#### [download this composite pattern Example](src/compositepattern.zip)
+#### [download this composite pattern Example](src/compositepattern.zip?raw=true)
 
 #### Output
 ```java
@@ -3055,7 +3056,7 @@ public class DecoratorPatternCustomer {
     }
 }
 ```
-#### [download this Decorator Pattern Example](src/decoratorpattern.zip)
+#### [download this Decorator Pattern Example](src/decoratorpattern.zip?raw=true)
 
 #### Output
 
@@ -3260,7 +3261,7 @@ public class FacadePatternClient {
 }
 ```
 
-#### [download this example](src/facadepattern.zip)
+#### [download this example](src/facadepattern.zip?raw=true)
 
 #### Output
 ```java
@@ -3545,7 +3546,7 @@ public class ProxyPatternClient {
 }
 ```
 
-#### [download Proxy Pattern Sample](src/proxypattern.zip)
+#### [download Proxy Pattern Sample](src/proxypattern.zip?raw=true)
 
 #### Sample Output
 
@@ -3703,7 +3704,7 @@ public class ChainofResponsibilityClient {
 }
 ```
 
-#### [download this example](src/chainofresponsibility.zip)
+#### [download this example](src/chainofresponsibility.zip?raw=true)
 
 #### Output
 ```java
@@ -3837,7 +3838,7 @@ public class CommandPatternClient {
 }
 ```
 
-#### [download this example](src/commandpattern.zip)
+#### [download this example](src/commandpattern.zip?raw=true)
 
 #### Output
 ```
@@ -3955,7 +3956,7 @@ public class InterpreterPatternClient {
 }
 ```
 
-#### [download this example](src/interpreterpattern.zip)
+#### [download this example](src/interpreterpattern.zip?raw=true)
 #### Output
 ```java
 Infix:   a+b*c  
@@ -4060,7 +4061,7 @@ public class IteratorPatternDemo {
 }
 ```
 
-#### [download this example](src/iteratorpattern.zip)
+#### [download this example](src/iteratorpattern.zip?raw=true)
 #### Output
 ```java
 Name : Ashwani Rajput  
@@ -4228,7 +4229,7 @@ public class MediatorPatternDemo {
 
 }// End of the MediatorPatternDemo class. 
 ```
-#### [Download this Example](src/MediatorPattern.zip) 
+#### [Download this Example](src/MediatorPattern.zip?raw=true) 
 #### Output
 ![Output](images/mediator-pattern-output.png)
 
@@ -4360,7 +4361,7 @@ public class MementoPatternDemo {
 // End of the MementoPatternDemo class.  
 ```
 
-#### [Download this Example](src/MementoPattern.zip)
+#### [Download this Example](src/MementoPattern.zip?raw=true)
 #### Output
 
 ![Output](images/memento-pattern-output.png)
@@ -4452,7 +4453,7 @@ public class EventSource extends Observable implements Runnable {
 }// End of the Eventsource class. 
 ```
 
-#### [Download this Example](src/ObserverPattern.zip)
+#### [Download this Example](src/ObserverPattern.zip?raw=true)
 
 #### Output
 
@@ -4683,7 +4684,7 @@ public class StatePatternDemo {
 }// End of the StatePatternDemo class.  
 ```
 
-#### [Download this Example](src/StatePattern.zip)
+#### [Download this Example](src/StatePattern.zip?raw=true)
 
 #### Output
 ![state-pattern-output](images/state-pattern-output.png)
@@ -4814,7 +4815,7 @@ public class StrategyPatternDemo {
 }// End of the StrategyPatternDemo class.
 ```
 
-#### [Download this Example](src/StrategyPattern.zip)
+#### [Download this Example](src/StrategyPattern.zip?raw=true)
 
 #### Output
 ![](images/strategy-pattern-output.png)
@@ -4920,7 +4921,7 @@ public class TemplatePatternDemo {
 }// End of the Soccer class.  
 ```
 
-#### [Download this Example](src/TemplatePattern.zip)
+#### [Download this Example](src/TemplatePattern.zip?raw=true)
 #### Output
 ![](images/template-pattern.png)
 
@@ -5193,7 +5194,7 @@ public class VehicleService {
 When you create all the interfaces and Java classes, the project directory will look something like the following:
 ![](images/visitor-design-pattern-java3.png)
 
-#### [Download Project](src/VisitorDesignPattern.zip)
+#### [Download Project](src/VisitorDesignPattern.zip?raw=true)
 
 #### Output:
 ```java
