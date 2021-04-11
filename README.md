@@ -30,7 +30,7 @@
 Creational design patterns are concerned with the way of creating objects. These design patterns are used when a decision must be made at the time of instantiation of a class (i.e. creating an object of a class).
 
 But everyone knows an object is created by using new keyword in java. For example:
-```
+```java
 StudentRecord s1=new StudentRecord();  
 ```
 Hard-Coded code is not the good programming approach. Here, we are creating the instance by using the new keyword. Sometimes, the nature of the object must be changed according to the nature of the program. In such cases, we must get the help of creational design patterns to provide more general and flexible approach.
@@ -49,6 +49,87 @@ The Factory Method Pattern is also known as **`Virtual Constructor`**.
 - We are going to create a Plan abstract class and concrete classes that extends the Plan abstract class. A factory class GetPlanFactory is defined as a next step.
 - GenerateBill class will use GetPlanFactory to get a Plan object. It will pass information (DOMESTICPLAN / COMMERCIALPLAN / INSTITUTIONALPLAN) to GetPalnFactory to get the type of object it needs.
 ![UML for Factory Method Pattern](/images/factorymethod.jpg)
+#### Calculate Electricity Bill : A Real World Example of Factory Method
+Step 1: Create a Plan abstract class.
+```java
+import java.io.*;      
+abstract class Plan{  
+         protected double rate;  
+         abstract void getRate();  
+   
+         public void calculateBill(int units){  
+              System.out.println(units*rate);  
+          }  
+}//end of Plan class.
+```
+Step 2: Create the concrete classes that extends Plan abstract class.
+```java
+class  DomesticPlan extends Plan{  
+        //@override  
+         public void getRate(){  
+             rate=3.50;              
+        }  
+   }//end of DomesticPlan class.  
+
+class  CommercialPlan extends Plan{  
+   //@override   
+    public void getRate(){   
+        rate=7.50;  
+   } //end of CommercialPlan class.  
+
+class  InstitutionalPlan extends Plan{  
+   //@override  
+    public void getRate(){   
+        rate=5.50;  
+   } //end of InstitutionalPlan class.  
+```
+Step 3: Create a GetPlanFactory to generate object of concrete classes based on given information.
+```java
+class GetPlanFactory{  
+      
+   //use getPlan method to get object of type Plan   
+       public Plan getPlan(String planType){  
+            if(planType == null){  
+             return null;  
+            }  
+          if(planType.equalsIgnoreCase("DOMESTICPLAN")) {  
+                 return new DomesticPlan();  
+               }   
+           else if(planType.equalsIgnoreCase("COMMERCIALPLAN")){  
+                return new CommercialPlan();  
+            }   
+          else if(planType.equalsIgnoreCase("INSTITUTIONALPLAN")) {  
+                return new InstitutionalPlan();  
+          }  
+      return null;  
+   }  
+}//end of GetPlanFactory class.  
+```
+Step 4: Generate Bill by using the GetPlanFactory to get the object of concrete classes by passing an information such as type of plan DOMESTICPLAN or COMMERCIALPLAN or INSTITUTIONALPLAN.
+```java
+import java.io.*;    
+class GenerateBill{  
+    public static void main(String args[])throws IOException{  
+      GetPlanFactory planFactory = new GetPlanFactory();  
+        
+      System.out.print("Enter the name of plan for which the bill will be generated: ");  
+      BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
+  
+      String planName=br.readLine();  
+      System.out.print("Enter the number of units for bill will be calculated: ");  
+      int units=Integer.parseInt(br.readLine());  
+  
+      Plan p = planFactory.getPlan(planName);  
+      //call getRate() method and calculateBill()method of DomesticPaln.  
+  
+       System.out.print("Bill amount for "+planName+" of  "+units+" units is: ");  
+           p.getRate();  
+           p.calculateBill(units);  
+            }  
+    }//end of GenerateBill class.  
+```
+Output
+![](/images/factorymethodoutput.jpg)
 ### 1.2 Abstract Factory Pattern
 ### 1.3 Singleton Pattern
 ### 1.4 Prototype Pattern
