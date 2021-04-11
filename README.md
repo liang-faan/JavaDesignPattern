@@ -5192,6 +5192,7 @@ public class VehicleService {
 ```
 
 When you create all the interfaces and Java classes, the project directory will look something like the following:
+
 ![](images/visitor-design-pattern-java3.png)
 
 #### [Download Project](src/VisitorDesignPattern.zip?raw=true)
