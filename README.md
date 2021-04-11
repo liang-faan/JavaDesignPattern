@@ -5,6 +5,7 @@
 ### 1.3 [Singleton Pattern](#13-singleton-pattern-1)
 ### 1.4 [Prototype Pattern](#14-prototype-pattern-1)
 ### 1.5 [Builder Pattern](#15-builder-pattern-1)
+### 1.6 [Object Pool Pattern](#16-object-pool-pattern-1)
 ## 2. [Structural Design Pattern](#2-structural-design-pattern-1)
 ### 2.1 [Adapter Pattern](#21-adapter-pattern-1)
 ### 2.2 [Bridge Pattern](#22-bridge-pattern-1)
@@ -1383,7 +1384,7 @@ public class LargeNonVegPizza extends NonVegPizza {
 ```
 
 *File: ExtraLargeNonVegPizza.java*
-```
+```java
 public class ExtraLargeNonVegPizza extends NonVegPizza {
     @Override
     public float price() {
@@ -1502,6 +1503,677 @@ public class LargePepsi extends Pepsi {
 
 - Step 12:**Now, create concrete sub-classes SmallCoke, MediumCoke, LargeCoke that will extend to the abstract class Coke**.
 
+*File: SmallCoke.java*
+```java
+public class SmallCoke extends Coke {
+
+    @Override
+    public String name() {
+        return "300 ml Coke";
+    }
+
+    @Override
+    public String size() {
+
+        return "Small Size";
+    }
+
+    @Override
+    public float price() {
+
+        return 25.0f;
+    }
+}// End of the SmallCoke class 
+```
+
+*File: MediumCoke.java*
+```java
+public class MediumCoke extends Coke {
+
+    @Override
+    public String name() {
+        return "500 ml Coke";
+    }
+
+    @Override
+    public String size() {
+
+        return "Medium Size";
+    }
+
+    @Override
+    public float price() {
+
+        return 35.0f;
+    }
+}// End of the MediumCoke class
+```
+
+*File: LargeCoke.java*
+```java
+public class LargeCoke extends Coke {
+    @Override
+    public String name() {
+        return "750 ml Coke";
+    }
+
+    @Override
+    public String size() {
+
+        return "Large Size";
+    }
+
+    @Override
+    public float price() {
+
+        return 50.0f;
+    }
+}// End of the LargeCoke class
+```
+
+- Step 13: **Create an OrderedItems class that are having Item objects defined above.**
+
+*File: OrderedItems.java*
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderedItems {
+
+    List<Item> items = new ArrayList<Item>();
+
+    public void addItems(Item item) {
+
+        items.add(item);
+    }
+
+    public float getCost() {
+
+        float cost = 0.0f;
+        for (Item item : items) {
+            cost += item.price();
+        }
+        return cost;
+    }
+
+    public void showItems() {
+
+        for (Item item : items) {
+            System.out.println("Item is:" + item.name());
+            System.out.println("Size is:" + item.size());
+            System.out.println("Price is: " + item.price());
+
+        }
+    }
+
+}// End of the OrderedItems class 
+```
+
+- Step 14:**Create an OrderBuilder class that will be responsible to create the objects of OrderedItems class**.
+
+*File: OrdereBuilder.java*
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class OrderBuilder {
+    public OrderedItems preparePizza() throws IOException {
+
+        OrderedItems itemsOrder = new OrderedItems();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println(" Enter the choice of Pizza ");
+        System.out.println("============================");
+        System.out.println("        1. Veg-Pizza       ");
+        System.out.println("        2. Non-Veg Pizza   ");
+        System.out.println("        3. Exit            ");
+        System.out.println("============================");
+
+        int pizzaandcolddrinkchoice = Integer.parseInt(br.readLine());
+        switch (pizzaandcolddrinkchoice) {
+            case 1: {
+
+                System.out.println("You ordered Veg Pizza");
+                System.out.println("\n\n");
+                System.out.println(" Enter the types of Veg-Pizza ");
+                System.out.println("------------------------------");
+                System.out.println("        1.Cheeze Pizza        ");
+                System.out.println("        2.Onion Pizza        ");
+                System.out.println("        3.Masala Pizza        ");
+                System.out.println("        4.Exit            ");
+                System.out.println("------------------------------");
+                int vegpizzachoice = Integer.parseInt(br.readLine());
+                switch (vegpizzachoice) {
+                    case 1: {
+                        System.out.println("You ordered Cheeze Pizza");
+
+                        System.out.println("Enter the cheeze pizza size");
+                        System.out.println("------------------------------------");
+                        System.out.println("    1. Small Cheeze Pizza ");
+                        System.out.println("    2. Medium Cheeze Pizza ");
+                        System.out.println("    3. Large Cheeze Pizza ");
+                        System.out.println("    4. Extra-Large Cheeze Pizza ");
+                        System.out.println("------------------------------------");
+                        int cheezepizzasize = Integer.parseInt(br.readLine());
+                        switch (cheezepizzasize) {
+                            case 1:
+                                itemsOrder.addItems(new SmallCheezePizza());
+                                break;
+                            case 2:
+                                itemsOrder.addItems(new MediumCheezePizza());
+                                break;
+                            case 3:
+                                itemsOrder.addItems(new LargeCheezePizza());
+                                break;
+                            case 4:
+                                itemsOrder.addItems(new ExtraLargeCheezePizza());
+                                break;
+                            case 2: {
+                                System.out.println("You ordered Onion Pizza");
+                                System.out.println("Enter the Onion pizza size");
+                                System.out.println("----------------------------------");
+                                System.out.println("    1. Small Onion Pizza ");
+                                System.out.println("    2. Medium Onion Pizza ");
+                                System.out.println("    3. Large Onion Pizza ");
+                                System.out.println("    4. Extra-Large Onion Pizza ");
+                                System.out.println("----------------------------------");
+                                int onionpizzasize = Integer.parseInt(br.readLine());
+                                switch (onionpizzasize) {
+                                    case 1:
+                                        itemsOrder.addItems(new SmallOnionPizza());
+                                        break;
+
+                                    case 2:
+                                        itemsOrder.addItems(new MediumOnionPizza());
+                                        break;
+
+                                    case 3:
+                                        itemsOrder.addItems(new LargeOnionPizza());
+                                        break;
+
+                                    case 4:
+                                        itemsOrder.addItems(new ExtraLargeOnionPizza());
+                                        break;
+
+                                }
+                            }
+                            break;
+                            case 3: {
+                                System.out.println("You ordered Masala Pizza");
+                                System.out.println("Enter the Masala pizza size");
+                                System.out.println("------------------------------------");
+                                System.out.println("    1. Small Masala Pizza ");
+                                System.out.println("    2. Medium Masala Pizza ");
+                                System.out.println("    3. Large Masala Pizza ");
+                                System.out.println("    4. Extra-Large Masala Pizza ");
+                                System.out.println("------------------------------------");
+                                int masalapizzasize = Integer.parseInt(br.readLine());
+                                switch (masalapizzasize) {
+                                    case 1:
+                                        itemsOrder.addItems(new SmallMasalaPizza());
+                                        break;
+
+                                    case 2:
+                                        itemsOrder.addItems(new MediumMasalaPizza());
+                                        break;
+
+                                    case 3:
+                                        itemsOrder.addItems(new LargeMasalaPizza());
+                                        break;
+
+                                    case 4:
+                                        itemsOrder.addItems(new ExtraLargeMasalaPizza());
+                                        break;
+
+                                }
+
+                            }
+                            break;
+
+                        }
+
+                    }
+                    break;// Veg- pizza choice completed.  
+
+                    case 2: {
+                        System.out.println("You ordered Non-Veg Pizza");
+                        System.out.println("\n\n");
+
+                        System.out.println("Enter the Non-Veg pizza size");
+                        System.out.println("------------------------------------");
+                        System.out.println("    1. Small Non-Veg  Pizza ");
+                        System.out.println("    2. Medium Non-Veg  Pizza ");
+                        System.out.println("    3. Large Non-Veg  Pizza ");
+                        System.out.println("    4. Extra-Large Non-Veg  Pizza ");
+                        System.out.println("------------------------------------");
+
+
+                        int nonvegpizzasize = Integer.parseInt(br.readLine());
+
+                        switch (nonvegpizzasize) {
+
+                            case 1:
+                                itemsOrder.addItems(new SmallNonVegPizza());
+                                break;
+
+                            case 2:
+                                itemsOrder.addItems(new MediumNonVegPizza());
+                                break;
+
+                            case 3:
+                                itemsOrder.addItems(new LargeNonVegPizza());
+                                break;
+
+                            case 4:
+                                itemsOrder.addItems(new ExtraLargeNonVegPizza());
+                                break;
+                        }
+
+                    }
+                    break;
+                    default: {
+                        break;
+
+                    }
+
+                }//end of main Switch  
+
+                //continued?..  
+                System.out.println(" Enter the choice of ColdDrink ");
+                System.out.println("============================");
+                System.out.println("        1. Pepsi            ");
+                System.out.println("        2. Coke             ");
+                System.out.println("        3. Exit             ");
+                System.out.println("============================");
+                int coldDrink = Integer.parseInt(br.readLine());
+                switch (coldDrink) {
+                    case 1: {
+                        System.out.println("You ordered Pepsi ");
+                        System.out.println("Enter the  Pepsi Size ");
+                        System.out.println("------------------------");
+                        System.out.println("    1. Small Pepsi ");
+                        System.out.println("    2. Medium Pepsi ");
+                        System.out.println("    3. Large Pepsi ");
+                        System.out.println("------------------------");
+                        int pepsisize = Integer.parseInt(br.readLine());
+                        switch (pepsisize) {
+                            case 1:
+                                itemsOrder.addItems(new SmallPepsi());
+                                break;
+
+                            case 2:
+                                itemsOrder.addItems(new MediumPepsi());
+                                break;
+
+                            case 3:
+                                itemsOrder.addItems(new LargePepsi());
+                                break;
+
+                        }
+                    }
+                    break;
+                    case 2: {
+                        System.out.println("You ordered Coke");
+                        System.out.println("Enter the Coke Size");
+                        System.out.println("------------------------");
+                        System.out.println("    1. Small Coke ");
+                        System.out.println("    2. Medium Coke  ");
+                        System.out.println("    3. Large Coke  ");
+                        System.out.println("    4. Extra-Large Coke ");
+                        System.out.println("------------------------");
+
+                        int cokesize = Integer.parseInt(br.readLine());
+                        switch (cokesize) {
+                            case 1:
+                                itemsOrder.addItems(new SmallCoke());
+                                break;
+
+                            case 2:
+                                itemsOrder.addItems(new MediumCoke());
+                                break;
+
+                            case 3:
+                                itemsOrder.addItems(new LargeCoke());
+                                break;
+
+
+                        }
+
+                    }
+                    break;
+                    default: {
+                        break;
+
+                    }
+
+                }//End of the Cold-Drink switch  
+                return itemsOrder;
+
+            } //End of the preparePizza() method 
+        }
+    }
+}
+```
+
+- Step 15: **Create a BuilderDemo class that will use the OrderBuilder class**.
+
+*File: BuilderDemo.java*
+```java
+import java.io.IOException;
+
+public class BuilderDemo {
+
+    public static void main(String[] args) throws IOException {
+        // TODO code application logic here  
+
+        OrderBuilder builder = new OrderBuilder();
+
+        OrderedItems orderedItems = builder.preparePizza();
+
+        orderedItems.showItems();
+
+        System.out.println("\n");
+        System.out.println("Total Cost : " + orderedItems.getCost());
+
+    }
+}// End of the BuilderDemo class
+```
+
+#### [download this Builder Pattern Example](src/5-Builderpattern.zip)
+
+#### Output
+
+![Pizza output 1](images/builderoutput1.jpg)
+
+![Pizza output 2](images/builderoutput2.jpg)
+
+### 1.6 [Object Pool Pattern]
+
+Mostly, performance is the key issue during the software development and the object creation, which may be a costly step.
+
+Object Pool Pattern says that **`to reuse the object that are expensive to create`**.
+
+Basically, an Object pool is a container which contains a specified amount of objects. When an object is taken from the pool, it is not available in the pool until it is put back. **`Objects in the pool have a lifecycle: creation, validation and destroy`**.
+
+A pool helps to manage available resources in a better way. There are many using examples: especially in application servers there are data source pools, thread pools etc.
+
+#### Advantage of Object Pool design pattern
+- It boosts the performance of the application significantly.
+- It is most effective in a situation where the rate of initializing a class instance is high.
+- It manages the connections and provides a way to reuse and share them.
+- It can also provide the limit for the maximum number of objects that can be created.
+
+#### Usage:
+- When an application requires objects which are expensive to create. Eg: there is a need of opening too many connections for the database then it takes too longer to create a new one and the database server will be overloaded.
+- When there are several clients who need the same resource at different times.
+
+:book: **`NOTE: Object pool design pattern is essentially used in Web Container of the server for creating thread pools and data source pools to process the requests`**.
+
+#### Example of Object Pool Pattern:
+
+Let's understand the example by the given UML diagram.
+
+##### UML for Object Pool Pattern
+
+![UML for Object Pool Pattern](images/objectpooluml.jpg)
+
+##### Implementation of above UML:
+
+- Step 1 **Create an ObjectPool class that is used to create the number of objects**.
+
+*File: ObjectPool.java*
+```java
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public abstract class ObjectPool<T> {  
+/* 
+  pool implementation is based on ConcurrentLinkedQueue from the java.util.concurrent package. 
+  ConcurrentLinkedQueue is a thread-safe queue based on linked nodes.  
+   Because the queue follows FIFO technique (first-in-first-out). 
+ */
+
+    private ConcurrentLinkedQueue<T> pool;
+
+    /*  
+      
+      ScheduledExecutorService starts a special task in a separate thread and observes 
+      the minimum and maximum number of objects in the pool periodically in a specified  
+       time (with parameter validationInterval).  
+      When the number of objects is less than the minimum, missing instances will be created.  
+      When the number of objects is greater than the maximum, too many instances will be removed.  
+      This is sometimes useful for the balance of memory consuming objects in the pool. 
+   */
+    private ScheduledExecutorService executorService;
+    /*
+     * Creates the pool.
+     *
+     * @param minObjects : the minimum number of objects residing in the pool
+     */
+
+    public ObjectPool(final int minObjects) {
+        // initialize pool  
+
+        initialize(minObjects);
+
+    }
+
+    /* 
+      Creates the pool. 
+      @param minObjects:   minimum number of objects residing in the pool. 
+      @param maxObjects:   maximum number of objects residing in the pool. 
+      @param validationInterval: time in seconds for periodical checking of  
+         minObjects / maxObjects conditions in a separate thread. 
+      When the number of objects is less than minObjects, missing instances will be created. 
+      When the number of objects is greater than maxObjects, too many instances will be removed. 
+    */
+    public ObjectPool(final int minObjects, final int maxObjects, final long validationInterval) {
+        // initialize pool  
+        initialize(minObjects);
+        // check pool conditions in a separate thread  
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleWithFixedDelay(new Runnable()  // annonymous class  
+        {
+            @Override
+            public void run() {
+                int size = pool.size();
+
+                if (size < minObjects) {
+                    int sizeToBeAdded = minObjects + size;
+                    for (int i = 0; i < sizeToBeAdded; i++) {
+                        pool.add(createObject());
+                    }
+                } else if (size > maxObjects) {
+                    int sizeToBeRemoved = size - maxObjects;
+                    for (int i = 0; i < sizeToBeRemoved; i++) {
+                        pool.poll();
+                    }
+                }
+            }
+        }, validationInterval, validationInterval, TimeUnit.SECONDS);
+    }
+
+    /* 
+        Gets the next free object from the pool. If the pool doesn't contain any objects, 
+        a new object will be created and given to the caller of this method back. 
+        
+        @return T borrowed object 
+    */
+    public T borrowObject() {
+        T object;
+        if ((object = pool.poll()) == null) {
+            object = createObject();
+        }
+        return object;
+    }
+
+    /* 
+         Returns object back to the pool. 
+         @param object object to be returned 
+     */
+    public void returnObject(T object) {
+        if (object == null) {
+            return;
+        }
+        this.pool.offer(object);
+    }
+
+    /* 
+         Shutdown this pool. 
+     */
+    public void shutdown() {
+        if (executorService != null) {
+            executorService.shutdown();
+        }
+    }
+
+    /* 
+        Creates a new object. 
+         @return T new object 
+     */
+    protected abstract T createObject();
+
+    private void initialize(final int minObjects) {
+        pool = new ConcurrentLinkedQueue<T>();
+        for (int i = 0; i < minObjects; i++) {
+            pool.add(createObject());
+        }
+    }
+}// End of the ObjectPool Class.  
+```
+
+- Step 2 **Create an ExportingProcess class that will be used by ExportingTask class**.
+
+*File: ExportingProcess.java*
+```java
+public class ExportingProcess {
+    private long processNo;
+
+    public ExportingProcess(long processNo) {
+        this.processNo = processNo;
+        // do some  expensive calls / tasks here in future  
+        // .........  
+        System.out.println("Object with process no. " + processNo + " was created");
+    }
+
+    public long getProcessNo() {
+        return processNo;
+    }
+}// End of the ExportingProcess class.  
+```
+
+- Step 3 **Create an ExportingTask class that will use ExportingProcess and ObjectPool class.**
+
+*File: ExportingTask.java*
+```java
+public class ExportingTask implements Runnable {
+    private ObjectPool<ExportingProcess> pool;
+    private int threadNo;
+
+    public ExportingTask(ObjectPool<ExportingProcess> pool, int threadNo) {
+        this.pool = pool;
+        this.threadNo = threadNo;
+    }
+
+    public void run() {
+        // get an object from the pool
+        ExportingProcess exportingProcess = pool.borrowObject();
+        System.out.println("Thread " + threadNo + ": Object with process no. "
+                + exportingProcess.getProcessNo() + " was borrowed");
+
+        //you can  do something here in future
+        // .........
+
+        // return ExportingProcess instance back to the pool
+        pool.returnObject(exportingProcess);
+
+        System.out.println("Thread " + threadNo + ": Object with process no. "
+                + exportingProcess.getProcessNo() + " was returned");
+    }
+
+}// End of the ExportingTask class. 
+```
+
+- Step 4 **Create an ObjectPoolDemo class.**
+
+*File: ObjectPoolDemo.java*
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
+public class ObjectPoolDemo {
+    private ObjectPool<ExportingProcess> pool;
+    private AtomicLong processNo = new AtomicLong(0);
+
+    public void setUp() {
+        // Create a pool of objects of type ExportingProcess.  
+           /*Parameters: 
+             1) Minimum number of special ExportingProcess instances residing in the pool = 4 
+             2) Maximum number of special ExportingProcess instances residing in the pool = 10 
+             3) Time in seconds for periodical checking of minObjects / maxObjects conditions 
+                in a separate thread = 5. 
+             -->When the number of ExportingProcess instances is less than minObjects,  
+                 missing instances will be created. 
+             -->When the number of ExportingProcess instances is greater than maxObjects, 
+                  too many instances will be removed. 
+            -->If the validation interval is negative, no periodical checking of  
+                  minObjects / maxObjects conditions in a separate thread take place. 
+              These boundaries are ignored then. 
+           */
+        pool = new ObjectPool<ExportingProcess>(4, 10, 5) {
+            protected ExportingProcess createObject() {
+                // create a test object which takes some time for creation  
+                return new ExportingProcess(processNo.incrementAndGet());
+            }
+        };
+    }
+
+    public void tearDown() {
+        pool.shutdown();
+    }
+
+    public void testObjectPool() {
+        ExecutorService executor = Executors.newFixedThreadPool(8);
+
+        // execute 8 tasks in separate threads  
+
+        executor.execute(new ExportingTask(pool, 1));
+        executor.execute(new ExportingTask(pool, 2));
+        executor.execute(new ExportingTask(pool, 3));
+        executor.execute(new ExportingTask(pool, 4));
+        executor.execute(new ExportingTask(pool, 5));
+        executor.execute(new ExportingTask(pool, 6));
+        executor.execute(new ExportingTask(pool, 7));
+        executor.execute(new ExportingTask(pool, 8));
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String args[]) {
+        ObjectPoolDemo op = new ObjectPoolDemo();
+        op.setUp();
+        op.tearDown();
+        op.testObjectPool();
+    }
+}//End of the ObjectPoolDemo class.  
+```
+
+#### [download this Object Pool Pattern Example](src/objectpoolpattern.zip)
+
+#### Output
+
+![](images/objectpooloutput.jpg)
 
 ## 2. Structural Design Pattern
 ### 2.1 Adapter Pattern
