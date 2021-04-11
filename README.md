@@ -3841,10 +3841,528 @@ Document Saved
 ```
 
 ### 3.3 Interpreter Pattern
+
+An Interpreter Pattern says that **"to define a representation of grammar of a given language, along with an interpreter that uses this representation to interpret sentences in the language"**.
+
+Basically the Interpreter pattern has limited area where it can be applied. We can discuss the Interpreter pattern only in terms of formal grammars but in this area there are better solutions that is why it is not frequently used.
+
+This pattern can applied for parsing the expressions defined in simple grammars and sometimes in simple rule engines.
+
+:book: `SQL Parsing uses interpreter design pattern`.
+
+#### Advantage of Interpreter Pattern
+- It is easier to change and extend the grammar.
+- Implementing the grammar is straightforward.
+
+
+#### Usage of Interpreter pattern:
+It is used:
+
+- When the grammar of the language is not complicated.
+- When the efficiency is not a priority.
+
+#### Example of Interpreter Pattern
+Let's understand the example of Interpreter Pattern by the above UML diagram.
+
+#### UML for Interpreter Pattern:
+![UML for Interpreter Pattern](images/interpreteruml.jpg)
+
+- Step 1 Create a Pattern interface.
+```java
+public interface Pattern {
+    public String conversion(String exp);
+}
+```
+
+- Step 2 Create a **InfixToPostfixPattern** class that will allow what kind of pattern you want to convert.
+
+*File: InfixToPostfixPattern.java*
+```java
+import java.util.Stack;
+
+public class InfixToPostfixPattern implements Pattern {
+    @Override
+    public String conversion(String exp) {
+        int priority = 0;// for the priority of operators.  
+        String postfix = "";
+        Stack<Character> s1 = new Stack<Character>();
+        for (int i = 0; i < exp.length(); i++) {
+            char ch = exp.charAt(i);
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%') {
+                // check the precedence  
+                if (s1.size() <= 0)
+                    s1.push(ch);
+            } else {
+                Character chTop = (Character) s1.peek();
+                if (chTop == '*' || chTop == '/')
+                    priority = 1;
+                else
+                    priority = 0;
+                if (priority == 1) {
+                    if (ch == '*' || ch == '/' || ch == '%') {
+                        postfix += s1.pop();
+                        i--;
+                    } else { // Same  
+                        postfix += s1.pop();
+                        i--;
+                    }
+                } else {
+                    if (ch == '+' || ch == '-') {
+                        postfix += s1.pop();
+                        s1.push(ch);
+                    } else
+                        s1.push(ch);
+                }
+            }
+        }  
+           else
+        {
+            postfix += ch;
+        }
+    }
+
+    int len = s1.size();  
+        for(
+    int j = 0;
+    j<len;j++)
+    postfix +=s1.pop();  
+        return postfix;
+
+}   
+}// End of the InfixToPostfixPattern class.  
+```
+
+- Step 3 Create a **InterpreterPatternClient** class that will use **InfixToPostfix** Conversion.
+
+*File: InterpreterPatternClient.java*
+
+```java
+public class InterpreterPatternClient {
+    public static void main(String[] args) {
+        String infix = "a+b*c";
+
+        InfixToPostfixPattern ip = new InfixToPostfixPattern();
+
+        String postfix = ip.conversion(infix);
+        System.out.println("Infix:   " + infix);
+        System.out.println("Postfix: " + postfix);
+    }
+}
+```
+
+#### [download this example](src/interpreterpattern.zip)
+#### Output
+```java
+Infix:   a+b*c  
+Postfix: abc*+ 
+```
+
 ### 3.4 Iterator Pattern
+
+According to GoF, Iterator Pattern is used "**to access the elements of an aggregate object sequentially without exposing its underlying implementation**".
+
+The Iterator pattern is also known as Cursor.
+
+In collection framework, we are now using Iterator that is preferred over Enumeration.
+
+:book: `java.util.Iterator interface uses Iterator Design Pattern`.
+
+#### Advantage of Iterator Pattern
+- It supports variations in the traversal of a collection.
+- It simplifies the interface to the collection.
+
+
+#### Usage of Iterator Pattern:
+It is used:
+
+- When you want to access a collection of objects without exposing its internal representation.
+- When there are multiple traversals of objects need to be supported in the collection.
+
+
+#### Example of Iterator Pattern
+Let's understand the example of iterator pattern pattern by the above UML diagram.
+
+##### UML for Iterator Pattern:
+
+![UML for Iterator Pattern](images/iteratoruml.jpg)
+
+#### Implementation of above UML
+- Step 1 Create a Iterartor interface.
+
+```java
+public interface Iterator {
+    public boolean hasNext();
+
+    public Object next();
+}
+```
+
+- Step 2 Create a Container interface.
+
+```java
+public interface Container {
+    public Iterator getIterator();
+}// End of the Iterator interface.
+```
+
+- Step 3 Create a **CollectionofNames** class that will implement **Container** interface.
+
+*File: CollectionofNames.java*
+```java
+public class CollectionofNames implements Container {
+    public String name[] = {"Ashwani Rajput", "Soono Jaiswal", "Rishi Kumar", "Rahul Mehta", "Hemant Mishra"};
+
+    @Override
+    public Iterator getIterator() {
+        return new CollectionofNamesIterate();
+    }
+
+    private class CollectionofNamesIterate implements Iterator {
+        int i;
+
+        @Override
+        public boolean hasNext() {
+            if (i < name.length) {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Object next() {
+            if (this.hasNext()) {
+                return name[i++];
+            }
+            return null;
+        }
+    }
+}  
+```
+
+- Step 4 Create a **IteratorPatternDemo** class.
+
+*File: IteratorPatternDemo.java*
+```java
+public class IteratorPatternDemo {
+    public static void main(String[] args) {
+        CollectionofNames cmpnyRepository = new CollectionofNames();
+
+        for (Iterator iter = cmpnyRepository.getIterator(); iter.hasNext(); ) {
+            String name = (String) iter.next();
+            System.out.println("Name : " + name);
+        }
+    }
+}
+```
+
+#### [download this example](src/iteratorpattern.zip)
+#### Output
+```java
+Name : Ashwani Rajput  
+Name : Soono Jaiswal  
+Name : Rishi Kumar  
+Name : Rahul Mehta  
+Name : Hemant Mishra  
+```
+
 ### 3.5 Mediator Pattern
+A Mediator Pattern says that "**to define an object that encapsulates how a set of objects interact**".
+
+I will explain the Mediator pattern by considering a problem. When we begin with development, we have a few classes and these classes interact with each other producing results. Now, consider slowly, the logic becomes more complex when functionality increases. Then what happens? We add more classes and they still interact with each other but it gets really difficult to maintain this code now. So, Mediator pattern takes care of this problem.
+
+Mediator pattern is used to reduce communication complexity between multiple objects or classes. This pattern provides a mediator class which normally handles all the communications between different classes and supports easy maintainability of the code by loose coupling.
+
+#### Benefits:
+- It decouples the number of classes.
+- It simplifies object protocols.
+- It centralizes the control.
+- The individual components become simpler and much easier to deal with because they don't need to pass messages to one another.
+- The components don't need to contain logic to deal with their intercommunication and therefore, they are more generic.
+
+#### Usage:
+- It is commonly used in message-based systems likewise chat applications.
+- When the set of objects communicate in complex but in well-defined ways.
+
+#### UML for Mediator Pattern
+![UML for Mediator Pattern](images/mediator-pattern.png)
+
+##### Participants:
+- **ApnaChatroom** :- defines the interface for interacting with participants.
+- **ApnaChatroomImpl** :- implements the operations defined by the Chatroom interface. The operations are managing the interactions between the objects: when one participant sends a message, the message is sent to the other participants.
+- **Participant** :- defines an interface for the users involved in chatting.
+- **User1, User2, ...UserN** :- implements Participant interface; the participant can be a number of users involved in chatting. But each Participant will keep only a reference to the ApnaChatRoom.
+
+#### Implementation of Mediator Pattern
+
+- Step 1: Create a ApnaChatRoom interface.
+```java
+//This is an interface.  
+public interface ApnaChatRoom {  
+      
+    public void showMsg(String msg, Participant p);  
+  
+}// End of the ApnaChatRoom interface.  
+```
+
+- Step 2: Create a **ApnaChatRoomIml** class that will implement **ApnaChatRoom** interface and will also use the number of participants involved in chatting through Participant interface.
+
+```java
+//This is a class.  
+import java.text.DateFormat;  
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
+  
+public class ApnaChatRoomImpl implements ApnaChatRoom{  
+    //get current date time   
+    DateFormat dateFormat = new SimpleDateFormat("E dd-MM-yyyy hh:mm a");  
+    Date date = new Date();  
+    @Override  
+    public void showMsg(String msg, Participant p) {  
+          
+        System.out.println(p.getName()+"'gets message: "+msg);  
+        System.out.println("\t\t\t\t"+"["+dateFormat.format(date).toString()+"]");    
+    }     
+}// End of the ApnaChatRoomImpl class.  
+```
+
+- Step 3: Create a **Participant** abstract class.
+```java
+//This is an abstract class.  
+public abstract class Participant {  
+      public abstract void sendMsg(String msg);  
+      public abstract void setname(String name);  
+      public abstract String getName();  
+}// End of the Participant abstract class. 
+```
+
+- Step 4: Create a **User1** class that will extend **Participant** abstract class and will use the **ApnaChatRoom** interface.
+
+```java
+//This is a class.  
+  
+public class User1 extends Participant {  
+      
+    private String name;  
+    private ApnaChatRoom chat;  
+      
+    @Override  
+    public void sendMsg(String msg) {  
+    chat.showMsg(msg,this);  
+          
+    }  
+  
+    @Override  
+    public void setname(String name) {  
+        this.name=name;  
+    }  
+  
+    @Override  
+    public String getName() {  
+        return name;  
+    }  
+      
+    public User1(ApnaChatRoom chat){  
+        this.chat=chat;  
+    }     
+      
+}// End of the User1 class. 
+```
+
+- Step 5: Create a **User2** class that will extend **Participant** abstract class and will use the **ApnaChatRoom** interface.
+
+```java
+//This is a class.  
+
+public class User2 extends Participant {
+
+    private String name;
+    private ApnaChatRoom chat;
+
+    @Override
+    public void sendMsg(String msg) {
+        this.chat.showMsg(msg, this);
+
+    }
+
+    @Override
+    public void setname(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public User2(ApnaChatRoom chat) {
+        this.chat = chat;
+    }
+}
+// End of the User2 class.  
+```
+
+- Step 6: Create a **MediatorPatternDemo** class that will use participants involved in chatting.
+```java
+//This is a class.  
+
+public class MediatorPatternDemo {
+
+    public static void main(String args[]) {
+
+        ApnaChatRoom chat = new ApnaChatRoomImpl();
+
+        User1 u1 = new User1(chat);
+        u1.setname("Ashwani Rajput");
+        u1.sendMsg("Hi Ashwani! how are you?");
+
+
+        User2 u2 = new User2(chat);
+        u2.setname("Soono Jaiswal");
+        u2.sendMsg("I am Fine ! You tell?");
+    }
+
+}// End of the MediatorPatternDemo class. 
+```
+#### [Download this Example](src/MediatorPattern.zip) 
+#### Output
+![Output](images/mediator-pattern-output.png)
+
 ### 3.6 Memento Pattern
+
+A Memento Pattern says that "**to restore the state of an object to its previous state**". But it must do this without violating Encapsulation. Such case is useful in case of error or failure.
+
+The Memento pattern is also known as **Token**.
+
+Undo or backspace or ctrl+z is one of the most used operation in an editor. Memento design pattern is used to implement the undo operation. This is done by saving the current state of the object as it changes state.
+
+#### Benefits:
+- It preserves encapsulation boundaries.
+- It simplifies the originator.
+
+#### Usage:
+- It is used in Undo and Redo operations in most software.
+- It is also used in database transactions.
+
+#### UML for Memento Pattern
+
+![](images/memento-pattern.png)
+
+##### Memento:
+- Stores internal state of the originator object. The state can include any number of state variables.
+- The Memento must have two interfaces, an interface to the caretaker. This interface must not allow any operations or any access to internal state stored by the memento and thus maintains the encapsulation. The other interface is Originator and it allows the Originator to access any state variables necessary to the originator to restore the previous state.
+##### Originator:
+- Creates a memento object that will capture the internal state of Originator.
+- Use the memento object to restore its previous state.
+##### Caretaker:
+- Responsible for keeping the memento.
+- The memento is transparent to the caretaker, and the caretaker must not operate on it.
+
+#### Implementation of Memento Pattern
+
+- Step 1: Create an Originator class that will use Memento object to restore its previous state.
+
+```java
+//This is a class.
+public class Originator {
+    private String state;
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public Memento saveStateToMemento() {
+        return new Memento(state);
+    }
+
+    public void getStateFromMemento(Memento Memento) {
+        state = Memento.getState();
+    }
+}// End of the Originator class.  
+```
+
+- Step 2: Create a Memento class that will Store internal state of the Originator object.
+```java
+//This is a class.  
+  
+public class Memento {  
+      
+    private String state;  
+  
+    public Memento(String state) {  
+        this.state=state;  
+    }  
+    public String getState() {  
+        return state;  
+    }  
+      
+}// End of the Memento class. 
+```
+
+- Step 3: Create a Caretaker class that will responsible for keeping the Memento.
+```java
+//This is a class.  
+import java.util.ArrayList;  
+import java.util.List;  
+
+public class Caretaker {  
+      
+    private List<Memento> mementoList = new ArrayList<Memento>();  
+  
+       public void add(Memento state){  
+          mementoList.add(state);  
+       }  
+  
+       public Memento get(int index){  
+          return mementoList.get(index);  
+       }  
+  
+}// End of the Caretaker class.  
+```
+
+- Step 4: Create a MementoPatternDemo class.
+```java
+//This is a class.  
+public class MementoPatternDemo {
+
+    public static void main(String[] args) {
+
+        Originator originator = new Originator();
+
+        Caretaker careTaker = new Caretaker();
+
+        originator.setState("State #1");
+        careTaker.add(originator.saveStateToMemento());
+        originator.setState("State #2");
+        careTaker.add(originator.saveStateToMemento());
+        originator.setState("State #3");
+        careTaker.add(originator.saveStateToMemento());
+        originator.setState("State #4");
+
+        System.out.println("Current State: " + originator.getState());
+        originator.getStateFromMemento(careTaker.get(0));
+        System.out.println("First saved State: " + originator.getState());
+        originator.getStateFromMemento(careTaker.get(1));
+        System.out.println("Second saved State: " + originator.getState());
+        originator.getStateFromMemento(careTaker.get(2));
+        System.out.println("Third saved State: " + originator.getState());
+    }
+
+}
+// End of the MementoPatternDemo class.  
+```
+
+#### [Download this Example](src/MementoPattern.zip)
+#### Output
+
+![Output](images/memento-pattern-output.png)
+
+
 ### 3.7 Observer Pattern
+
 ### 3.8 State Pattern
 ### 3.9 Strategy Pattern
 ### 3.10 Template Pattern
