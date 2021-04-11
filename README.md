@@ -3540,7 +3540,7 @@ public class ProxyPatternClient {
 }
 ```
 
-#### [download Proxy Patter Sample] (src/proxypattern.zip)
+#### [download Proxy Patter Sample](src/proxypattern.zip)
 
 #### Sample Output
 
