@@ -310,40 +310,40 @@ class FactoryCreator {
 ```java
 import java.io.*;  
 class AbstractFactoryPatternExample {  
-      public static void main(String args[])throws IOException {  
+    public static void main(String args[])throws IOException {  
        
-      BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
+    BufferedReader br=new BufferedReader(new InputStreamReader(System.in));  
   
-      System.out.print("Enter the name of Bank from where you want to take loan amount: ");  
-      String bankName=br.readLine();  
+    System.out.print("Enter the name of Bank from where you want to take loan amount: ");  
+    String bankName=br.readLine();  
   
-System.out.print("\n");  
-System.out.print("Enter the type of loan e.g. home loan or business loan or education loan : ");  
-  
-String loanName=br.readLine();  
-AbstractFactory bankFactory = FactoryCreator.getFactory("Bank");  
-Bank b=bankFactory.getBank(bankName);  
-  
-System.out.print("\n");  
-System.out.print("Enter the interest rate for "+b.getBankName()+ ": ");  
-  
-double rate=Double.parseDouble(br.readLine());  
-System.out.print("\n");  
-System.out.print("Enter the loan amount you want to take: ");  
-  
-double loanAmount=Double.parseDouble(br.readLine());  
-System.out.print("\n");  
-System.out.print("Enter the number of years to pay your entire loan amount: ");  
-int years=Integer.parseInt(br.readLine());  
-  
-System.out.print("\n");  
-System.out.println("you are taking the loan from "+ b.getBankName());  
-  
-AbstractFactory loanFactory = FactoryCreator.getFactory("Loan");  
-           Loan l=loanFactory.getLoan(loanName);  
-           l.getInterestRate(rate);  
-           l.calculateLoanPayment(loanAmount,years);  
-  }  
+    System.out.print("\n");  
+    System.out.print("Enter the type of loan e.g. home loan or business loan or education loan : ");  
+    
+    String loanName=br.readLine();  
+    AbstractFactory bankFactory = FactoryCreator.getFactory("Bank");  
+    Bank b=bankFactory.getBank(bankName);  
+    
+    System.out.print("\n");  
+    System.out.print("Enter the interest rate for "+b.getBankName()+ ": ");  
+    
+    double rate=Double.parseDouble(br.readLine());  
+    System.out.print("\n");  
+    System.out.print("Enter the loan amount you want to take: ");  
+    
+    double loanAmount=Double.parseDouble(br.readLine());  
+    System.out.print("\n");  
+    System.out.print("Enter the number of years to pay your entire loan amount: ");  
+    int years=Integer.parseInt(br.readLine());  
+    
+    System.out.print("\n");  
+    System.out.println("you are taking the loan from "+ b.getBankName());  
+    
+    AbstractFactory loanFactory = FactoryCreator.getFactory("Loan");  
+            Loan l=loanFactory.getLoan(loanName);  
+            l.getInterestRate(rate);  
+            l.calculateLoanPayment(loanAmount,years);  
+    }  
 }//End of the  AbstractFactoryPatternExample   
 ```
 - Ouput
@@ -353,6 +353,81 @@ AbstractFactory loanFactory = FactoryCreator.getFactory("Loan");
 - [download this Abstract Factory Pattern Example](/src/abstractfactorypattern.zip)
 
 ### 1.3 Singleton Pattern
+Singleton Pattern says that just **`define a class that has only one instance and provides a global point of access to it`**.
+
+In other words, a class must ensure that only single instance should be created and single object can be used by all other classes.
+
+There are two forms of singleton design pattern
+- Early Instantiation: creation of instance at load time.
+- Lazy Instantiation: creation of instance when required.
+#### Advantage of Singleton design pattern
+- Saves memory because object is not created at each request. Only single instance is reused again and again.
+#### Usage of Singleton design pattern
+- Singleton pattern is mostly used in multi-threaded and database applications. It is used in logging, caching, thread pools, configuration settings etc.
+#### Uml of Singleton design pattern
+
+![Singleton](images/singleton.jpg)
+
+#### How to create Singleton design pattern?
+To create the singleton class, we need to have static member of class, private constructor and static factory method.
+- `Static member`: It gets memory only once because of static, itcontains the instance of the Singleton class.
+- `Private constructor`: It will prevent to instantiate the Singleton class from outside the class.
+- `Static factory method`: This provides the global point of access to the Singleton object and returns the instance to the caller.
+
+#### Understanding early Instantiation of Singleton Pattern
+In such case, we create the instance of the class at the time of declaring the static data member, so instance of the class is created at the time of classloading.
+
+Let's see the example of singleton design pattern using early instantiation.
+
+```java
+class A{  
+    private static A obj=new A();//Early, instance will be created at load time  
+    private A(){}
+
+    public static A getA(){  
+    return obj;  
+    }
+
+    public void doSomething(){  
+    //write your code  
+    }
+}
+```
+#### Understanding lazy Instantiation of Singleton Pattern
+In such case, we create the instance of the class in synchronized method or synchronized block, so instance of the class is created when required.
+
+Let's see the simple example of singleton design pattern using lazy instantiation.
+
+```java
+class A {
+    private static volatile A obj;
+    /*
+    volatile make sure variable write to main memory
+    if deploy environment has multiple CPU, each CPU will have its own cache. In the same machine and refer to same instance, volatile make sure all CPU refer to the same variable instance inside main memory. 
+    */
+
+    private A() {
+    }
+
+    public static A getA() {
+        if (obj == null) {
+            synchronized (A.class) {
+                if (obj == null) {
+                    obj = new A();//instance will be created at request time  
+                }
+            }
+        }
+        return obj;
+    }
+
+    public void doSomething() {
+        //write your code  
+    }
+}
+```
+#### Significance of Classloader in Singleton Pattern
+
+
 ### 1.4 Prototype Pattern
 ### 1.5 Builder Pattern
 
