@@ -403,7 +403,8 @@ class A {
     private static volatile A obj;
     /*
     volatile make sure variable write to main memory
-    if deploy environment has multiple CPU, each CPU will have its own cache. In the same machine and refer to same instance, volatile make sure all CPU refer to the same variable instance inside main memory. 
+    if deploy environment has multiple CPU, each CPU will have its own cache. 
+    To make sure all CPU refers to the same instance, volatile make sure variable ready from main memory. 
     */
 
     private A() {
@@ -426,7 +427,9 @@ class A {
 }
 ```
 #### Significance of Classloader in Singleton Pattern
-
+```
+:open_book: If singleton class is loaded by two classloaders, two instance of singleton class will be created, one for each classloader.
+```
 
 ### 1.4 Prototype Pattern
 ### 1.5 Builder Pattern
