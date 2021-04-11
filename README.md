@@ -1888,7 +1888,7 @@ public class BuilderDemo {
 
 ![Pizza output 2](images/builderoutput2.jpg)
 
-### 1.6 [Object Pool Pattern]
+### 1.6 Object Pool Pattern
 
 Mostly, performance is the key issue during the software development and the object creation, which may be a costly step.
 
@@ -2176,9 +2176,713 @@ public class ObjectPoolDemo {
 ![](images/objectpooloutput.jpg)
 
 ## 2. Structural Design Pattern
+
+**Structural design** patterns are concerned with how classes and objects can be composed, to form larger structures.
+
+The structural design patterns **simplifies the structure by identifying the relationships**.
+
+These patterns focus on, how the classes inherit from each other and how they are composed from other classes.
+
+### Types of structural design patterns
+
+There are following 7 types of structural design patterns.
+
+- [Adapter Pattern](#21-adapter-pattern-1)
+    - Adapting an interface into another according to client expectation.
+
+- [Bridge Pattern](#22-bridge-pattern-1)
+    - Separating abstraction (interface) from implementation.
+
+- [Composite Pattern](#23-composite-pattern-1)
+    - Allowing clients to operate on hierarchy of objects.
+
+- [Decorator Pattern](#24-decorator-pattern-1)
+    - Adding functionality to an object dynamically.
+
+- [Facade Pattern](#25-facade-pattern-1)
+    - Providing an interface to a set of interfaces.
+
+- [Flyweight Pattern](#26-flyweight-pattern-1)
+    - Reusing an object by sharing it.
+
+- [Proxy Pattern](#27-proxy-pattern-1)
+    - Representing another object.
+
+
 ### 2.1 Adapter Pattern
+
+An Adapter Pattern says that just **`converts the interface of a class into another interface that a client wants`**.
+
+In other words, to provide the interface according to client requirement while using the services of a class with a different interface.
+
+The Adapter Pattern is also known as **`Wrapper`**.
+
+#### Advantage of Adapter Pattern
+- It allows two or more previously incompatible objects to interact.
+- It allows reusability of existing functionality.
+
+
+#### Usage of Adapter pattern
+It is used:
+- When an object needs to utilize an existing class with an incompatible interface.
+- When you want to create a reusable class that cooperates with classes which don't have compatible interfaces.
+- When you want to create a reusable class that cooperates with classes which don't have compatible interfaces.
+
+#### Example of Adapter Pattern
+
+Let's understand the example of adapter design pattern by the above UML diagram.
+
+#### UML for Adapter Pattern
+There are the following specifications for the adapter pattern:
+
+- **Target Interface**: This is the desired interface class which will be used by the clients.
+- **Adapter class**: This class is a wrapper class which implements the desired target interface and modifies the specific request available from the Adaptee class.
+- **Adaptee class**: This is the class which is used by the Adapter class to reuse the existing functionality and modify them for desired use.
+- **Client**: This class will interact with the Adapter class.
+
+![UML for Adapter Pattern](images/adapteruml.jpg)
+
+#### Implementation of above UML:
+
+- Step 1 **Create a CreditCard interface (Target interface)**.
+
+*File: CreditCard.java*
+```java
+public interface CreditCard {
+    public void giveBankDetails();
+
+    public String getCreditCard();
+}// End of the CreditCard interface.  
+```
+
+- Step 2 **Create a BankDetails class (Adaptee class)**.
+*File: BankDetails.java*
+```java
+// This is the adapter class.  
+public class BankDetails {
+    private String bankName;
+    private String accHolderName;
+    private long accNumber;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getAccHolderName() {
+        return accHolderName;
+    }
+
+    public void setAccHolderName(String accHolderName) {
+        this.accHolderName = accHolderName;
+    }
+
+    public long getAccNumber() {
+        return accNumber;
+    }
+
+    public void setAccNumber(long accNumber) {
+        this.accNumber = accNumber;
+    }
+}// End of the BankDetails class. 
+```
+
+- Step 3 **Create a BankCustomer class (Adapter class)**.
+*File: BankCustomer.java*
+```java
+// This is the adapter class  
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class BankCustomer extends BankDetails implements CreditCard {
+    public void giveBankDetails() {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+            System.out.print("Enter the account holder name :");
+            String customername = br.readLine();
+            System.out.print("\n");
+
+            System.out.print("Enter the account number:");
+            long accno = Long.parseLong(br.readLine());
+            System.out.print("\n");
+
+            System.out.print("Enter the bank name :");
+            String bankname = br.readLine();
+
+            setAccHolderName(customername);
+            setAccNumber(accno);
+            setBankName(bankname);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getCreditCard() {
+        long accno = getAccNumber();
+        String accholdername = getAccHolderName();
+        String bname = getBankName();
+
+        return ("The Account number " + accno + " of " + accholdername + " in " + bname + "  
+        bank is valid and authenticated for issuing the credit card.");  
+    }
+}//End of the BankCustomer class.  
+```
+- Step 4 **Create a AdapterPatternDemo class (client class)**.
+
+*File: AdapterPatternDemo.java*
+```java
+//This is the client class.  
+public class AdapterPatternDemo {
+    public static void main(String args[]) {
+        CreditCard targetInterface = new BankCustomer();
+        targetInterface.giveBankDetails();
+        System.out.print(targetInterface.getCreditCard());
+    }
+}//End of the BankCustomer class.  
+```
+
+#### [download this example](src/adapterpattern.zip)
+
+#### Output
+
+```java 
+Enter the account holder name :Sonoo Jaiswal  
+  
+Enter the account number:10001  
+  
+Enter the bank name :State Bank of India  
+  
+The Account number 10001 of Sonoo Jaiswal in State Bank of India bank is valid   
+and authenticated for issuing the credit card. 
+```
+
 ### 2.2 Bridge Pattern
+
+A Bridge Pattern says that just **decouple the functional abstraction from the implementation so that the two can vary independently**.
+
+The Bridge Pattern is also known as **Handle or Body**.
+
+#### Advantage of Bridge Pattern
+
+- It enables the separation of implementation from the interface.
+- It improves the extensibility.
+- It allows the hiding of implementation details from the client.
+
+#### Usage of Bridge Pattern
+
+- When you don't want a permanent binding between the functional abstraction and its implementation.
+- When both the functional abstraction and its implementation need to extended using sub-classes.
+- It is mostly used in those places where changes are made in the implementation does not affect the clients.
+
+#### Example of Bridge Pattern
+
+The UML given below describes the example of bridge pattern.
+
+![UML for Bridge Pattern](images/bridgeuml.jpg)
+
+#### Implementation of above UML
+
+- Step 1 Create a **Question** interface that provides the navigation from one question to another or vice-versa.
+
+*File: Question.java*
+```java
+// this is the Question interface.  
+public interface Question {
+    public void nextQuestion();
+
+    public void previousQuestion();
+
+    public void newQuestion(String q);
+
+    public void deleteQuestion(String q);
+
+    public void displayQuestion();
+
+    public void displayAllQuestions();
+}
+// End of the Question interface. 
+```
+
+- Step 2 Create a **JavaQuestions** implementation class that will implement **Question** interface.
+
+
+*File: JavaQuestions.java*
+```java
+// this is the JavaQuestions class.  
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class JavaQuestions implements Question {
+    private List<String> questions = new ArrayList<String>();
+    private int current = 0;
+
+    public JavaQuestions() {
+        questions.add("What is class? ");
+        questions.add("What is interface? ");
+        questions.add("What is abstraction? ");
+        questions.add("How multiple polymorphism is achieved in java? ");
+        questions.add("How many types of exception  handling are there in java? ");
+        questions.add("Define the keyword final for  variable, method, and class in java? ");
+        questions.add("What is abstract class? ");
+        questions.add("What is multi-threading? ");
+    }
+
+    public void nextQuestion() {
+        if (current <= questions.size() - 1)
+            current++;
+        System.out.print(current);
+    }
+
+    public void previousQuestion() {
+        if (current > 0)
+            current--;
+    }
+
+    public void newQuestion(String quest) {
+        questions.add(quest);
+    }
+
+    public void deleteQuestion(String quest) {
+        questions.remove(quest);
+    }
+
+    public void displayQuestion() {
+        System.out.println(questions.get(current));
+    }
+
+    public void displayAllQuestions() {
+        for (String quest : questions) {
+            System.out.println(quest);
+        }
+    }
+}// End of the JavaQuestions class.
+```
+
+- Step 3 Create a **QuestionManager** class that will use **Question** interface which will act as a bridge.
+
+*File: QuestionManager.java*
+```java
+// this is the QuestionManager class.  
+public class QuestionManager {
+    protected Question q;
+    public String catalog;
+
+    public QuestionManager(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public void next() {
+        q.nextQuestion();
+    }
+
+    public void previous() {
+        q.previousQuestion();
+    }
+
+    public void newOne(String quest) {
+        q.newQuestion(quest);
+    }
+
+    public void delete(String quest) {
+        q.deleteQuestion(quest);
+    }
+
+    public void display() {
+        q.displayQuestion();
+    }
+
+    public void displayAll() {
+        System.out.println("Question Paper: " + catalog);
+        q.displayAllQuestions();
+    }
+}// End of the QuestionManager class.  
+```
+
+- Step4 Create a **QuestionFormat** class that will extend the **QuestionManager** class
+
+*File: QuestionFormat.java*
+```java
+// this is the QuestionFormat class.  
+public class QuestionFormat extends QuestionManager {
+    public QuestionFormat(String catalog) {
+        super(catalog);
+    }
+
+    public void displayAll() {
+        System.out.println("\n---------------------------------------------------------");
+        super.displayAll();
+        System.out.println("-----------------------------------------------------------");
+    }
+}// End of the QuestionFormat class.  
+
+```
+
+- Step 5 Create a **BridgePatternDemo** class.
+
+*File: BridgePatternDemo.java*
+```java
+// this is the BridgePatternDemo class.  
+public class BridgePatternDemo {
+    public static void main(String[] args) {
+        QuestionFormat questions = new QuestionFormat("Java Programming Language");
+        questions.q = new JavaQuestions();
+        questions.delete("what is class?");
+        questions.display();
+        questions.newOne("What is inheritance? ");
+
+        questions.newOne("How many types of inheritance are there in java?");
+        questions.displayAll();
+    }
+}// End of the BridgePatternDemo class.
+```
+
+#### [download this Bridge Pattern Example](src/bridgepattern.zip)
+
+#### Output
+```
+What is interface?  
+  
+--------------------------------------------------------------------  
+Question Paper: Java Programming Language  
+What is class?  
+What is interface?  
+What is abstraction?  
+How multiple polymorphism is achieved in java?  
+How many types of exception  handling are there in java?  
+Define the keyword final for  variable, method, and class in java?  
+What is abstract class?  
+What is multi-threading?  
+What is inheritance?  
+How many types of inheritance are there in java?  
+----------------------------------------------------------------------- 
+```
+
 ### 2.3 Composite Pattern
+
+A Composite Pattern says that just **`allow clients to operate in generic manner on objects that may or may not represent a hierarchy of objects`**.
+
+#### Advantage of Composite Design Pattern
+
+- It defines class hierarchies that contain primitive and complex objects.
+- It makes easier to you to add new kinds of components.
+- It provides flexibility of structure with manageable class or interface.
+
+#### Usage of Composite Pattern
+It is used:
+
+- When you want to represent a full or partial hierarchy of objects.
+- When the responsibilities are needed to be added dynamically to the individual objects without affecting other objects. Where the responsibility of object may vary from time to time.
+
+#### UML for Composite Pattern
+
+![UML for Composite Pattern](images/compositeuml1.jpg)
+
+#### Elements used in Composite Pattern
+
+Let's see the 4 elements of composte pattern.
+
+- 1) Component
+
+    - Declares interface for objects in composition.
+    - Implements default behavior for the interface common to all classes as appropriate.
+    - Declares an interface for accessing and managing its child components.
+
+- 2) Leaf
+
+    - Represents leaf objects in composition. A leaf has no children.
+    - Defines behavior for primitive objects in the composition.
+
+- 3) Composite
+
+    - Defines behavior for components having children.
+    - Stores child component.
+    - Implements child related operations in the component interface.
+
+- 4) Client
+
+    - Manipulates objects in the composition through the component interface.
+
+:book: **Note**:The work flow of above general UML is as follows.
+
+`Client uses the component class interface to interact with objects in the composition structure. If recipient is the leaf then request will be handled directly. If recipient is a composite, then it usually forwards the request to its child for performing the additional operations`.
+
+#### Example of Composite Pattern
+
+We can easily understand the example of composite design pattern by the UML diagram given below:
+
+![Example of Composite Pattern](images/compositeuml2.jpg)
+
+#### Implementation of above UML:
+
+
+- Step 1 Create an **Employee** interface that will be treated as a **component**.
+
+*File: Employee.java*
+```java
+// this is the Employee interface i.e. Component.  
+public interface Employee {
+    public int getId();
+
+    public String getName();
+
+    public double getSalary();
+
+    public void print();
+
+    public void add(Employee employee);
+
+    public void remove(Employee employee);
+
+    public Employee getChild(int i);
+}// End of the Employee interface.  
+```
+
+- Step 2 Create a **BankManager** class that will be treated as a **Composite** and implements **Employee** interface.
+
+*File: BankManager.java*
+```java
+// this is the BankManager class i.e. Composite.  
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class BankManager implements Employee {
+    private int id;
+    private String name;
+    private double salary;
+
+    public BankManager(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    List<Employee> employees = new ArrayList<Employee>();
+
+    @Override
+    public void add(Employee employee) {
+        employees.add(employee);
+    }
+
+    @Override
+    public Employee getChild(int i) {
+        return employees.get(i);
+    }
+
+    @Override
+    public void remove(Employee employee) {
+        employees.remove(employee);
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("==========================");
+        System.out.println("Id =" + getId());
+        System.out.println("Name =" + getName());
+        System.out.println("Salary =" + getSalary());
+        System.out.println("==========================");
+
+        Iterator<Employee> it = employees.iterator();
+
+        while (it.hasNext()) {
+            Employee employee = it.next();
+            employee.print();
+        }
+    }
+}// End of the BankManager class.  
+```
+
+- Step 3 Create a **Cashier** class that will be treated as a **leaf** and it will implement to the **Employee** interface.
+
+*File: Cashier.java*
+```java
+public class Cashier implements Employee {
+    /* 
+         In this class,there are many methods which are not applicable to cashier because 
+         it is a leaf node. 
+     */
+    private int id;
+    private String name;
+    private double salary;
+
+    public Cashier(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    @Override
+    public void add(Employee employee) {
+        //this is leaf node so this method is not applicable to this class.  
+    }
+
+    @Override
+    public Employee getChild(int i) {
+        //this is leaf node so this method is not applicable to this class.  
+        return null;
+    }
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub  
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("==========================");
+        System.out.println("Id =" + getId());
+        System.out.println("Name =" + getName());
+        System.out.println("Salary =" + getSalary());
+        System.out.println("==========================");
+    }
+
+    @Override
+    public void remove(Employee employee) {
+        //this is leaf node so this method is not applicable to this class.  
+    }
+}  
+```
+
+- Step 4 Create a **Accountant** class that will also be treated as a **leaf** and it will implement to the **Employee** interface.
+
+*File: Accountant.java*
+```java
+public class Accountant implements Employee {
+    /* 
+        In this class,there are many methods which are not applicable to cashier because 
+        it is a leaf node. 
+    */
+    private int id;
+    private String name;
+    private double salary;
+
+    public Accountant(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    @Override
+    public void add(Employee employee) {
+        //this is leaf node so this method is not applicable to this class.  
+    }
+
+    @Override
+    public Employee getChild(int i) {
+        //this is leaf node so this method is not applicable to this class.  
+        return null;
+    }
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub  
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("=========================");
+        System.out.println("Id =" + getId());
+        System.out.println("Name =" + getName());
+        System.out.println("Salary =" + getSalary());
+        System.out.println("=========================");
+    }
+
+    @Override
+    public void remove(Employee employee) {
+        //this is leaf node so this method is not applicable to this class.  
+    }
+}
+```
+
+- Step 5 Create a **CompositePatternDemo** class that will also be treated as a **Client** and ii will use the **Employee** interface.
+
+*File: CompositePatternDemo.java*
+```java
+public class CompositePatternDemo {
+    public static void main(String args[]) {
+        Employee emp1 = new Cashier(101, "Sohan Kumar", 20000.0);
+        Employee emp2 = new Cashier(102, "Mohan Kumar", 25000.0);
+        Employee emp3 = new Accountant(103, "Seema Mahiwal", 30000.0);
+        Employee manager1 = new BankManager(100, "Ashwani Rajput", 100000.0);
+
+        manager1.add(emp1);
+        manager1.add(emp2);
+        manager1.add(emp3);
+        manager1.print();
+    }
+}
+```
+#### [download this composite pattern Example](src/compositepattern.zip)
+
+#### Output
+```java
+==========================  
+Id =100  
+Name =Ashwani Rajput  
+Salary =100000.0  
+==========================  
+==========================  
+Id =101  
+Name =Sohan Kumar  
+Salary =20000.0  
+==========================  
+==========================  
+Id =102  
+Name =Mohan Kumar  
+Salary =25000.0  
+==========================  
+=========================  
+Id =103  
+Name =Seema Mahiwal  
+Salary =30000.0  
+=========================  
+```
+
 ### 2.4 Decorator Pattern
 ### 2.5 Facade Pattern
 ### 2.6 Flyweight Pattern
@@ -2198,7 +2902,7 @@ public class ObjectPoolDemo {
 ### 3.11 Visitor Pattern
 
 #
-*This file generated by [liang.faam](https://github.com/liang-faan/JavaDesignPattern) on April 11, 2021*
+*This file generated by [@liang.faan](https://github.com/liang-faan/JavaDesignPattern) on April 11, 2021*
 
 ##
 Resources reference to [Design Patterns in Java](https://www.javatpoint.com/design-patterns-in-java) @ javapoint.com
