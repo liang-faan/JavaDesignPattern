@@ -129,7 +129,9 @@ class GenerateBill{
     }//end of GenerateBill class.  
 ```
 - Output
+
     ![Sample Output](/images/factorymethodoutput.jpg)
+    
 - [Source Code Download](/src/factorymethodpattern.zip)
 ### 1.2 Abstract Factory Pattern
 ### 1.3 Singleton Pattern
