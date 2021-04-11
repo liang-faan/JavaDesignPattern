@@ -735,7 +735,773 @@ class JDBCSingletonDemo {
 ![Ouput 3](images/singletonoutput2.jpg)
 
 ### 1.4 Prototype Pattern
+Prototype Pattern says that cloning of an existing object instead of creating new one and can also be customized as per the requirement.
+
+This pattern should be followed, if the cost of creating a new object is expensive and resource intensive.
+
+#### Advantage of Prototype Pattern
+
+The main advantages of prototype pattern are as follows:
+- It reduces the need of sub-classing.
+- It hides complexities of creating objects.
+- The clients can get new objects without knowing which type of object it will be.
+- It lets you add or remove objects at runtime.
+
+#### Usage of Prototype Pattern
+- When the classes are instantiated at runtime.
+- When the cost of creating an object is expensive or complicated.
+- When you want to keep the number of classes in an application minimum.
+- When the client application needs to be unaware of object creation and representation.
+
+#### UML for Prototype Pattern
+
+![prototype](images/prototype.jpg)
+
+- We are going to create an interface *Prototype* that contains a method *getClone()* of *Prototype* type.
+- Then, we create a concrete class *EmployeeRecord* which implements *Prototype* interface that does the cloning of *EmployeeRecord* object.
+- *PrototypeDemo* class will uses this concrete class *EmployeeRecord*.
+
+#### Example of Prototype Design Pattern
+
+Let's see the example of prototype design pattern.
+
+*File: Prototype.java*
+```java
+interface Prototype {  
+  
+     public Prototype getClone();  
+      
+}//End of Prototype interface.  
+```
+*File: EmployeeRecord.java*
+```java
+class EmployeeRecord implements Prototype {
+
+    private int id;
+    private String name, designation;
+    private double salary;
+    private String address;
+
+    public EmployeeRecord() {
+        System.out.println("   Employee Records of Oracle Corporation ");
+        System.out.println("---------------------------------------------");
+        System.out.println("Eid" + "\t" + "Ename" + "\t" + "Edesignation" + "\t" + "Esalary" + "\t\t" + "Eaddress");
+
+    }
+
+    public EmployeeRecord(int id, String name, String designation, double salary, String address) {
+
+        this();
+        this.id = id;
+        this.name = name;
+        this.designation = designation;
+        this.salary = salary;
+        this.address = address;
+    }
+
+    public void showRecord() {
+
+        System.out.println(id + "\t" + name + "\t" + designation + "\t" + salary + "\t" + address);
+    }
+
+    @Override
+    public Prototype getClone() {
+
+        return new EmployeeRecord(id, name, designation, salary, address);
+    }
+}//End of EmployeeRecord class. 
+```
+
+*File: PrototypeDemo.java*
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+class PrototypeDemo {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter Employee Id: ");
+        int eid = Integer.parseInt(br.readLine());
+        System.out.print("\n");
+
+        System.out.print("Enter Employee Name: ");
+        String ename = br.readLine();
+        System.out.print("\n");
+
+        System.out.print("Enter Employee Designation: ");
+        String edesignation = br.readLine();
+        System.out.print("\n");
+
+        System.out.print("Enter Employee Address: ");
+        String eaddress = br.readLine();
+        System.out.print("\n");
+
+        System.out.print("Enter Employee Salary: ");
+        double esalary = Double.parseDouble(br.readLine());
+        System.out.print("\n");
+
+        EmployeeRecord e1 = new EmployeeRecord(eid, ename, edesignation, esalary, eaddress);
+
+        e1.showRecord();
+        System.out.println("\n");
+        EmployeeRecord e2 = (EmployeeRecord) e1.getClone();
+        e2.showRecord();
+    }
+}//End of the ProtoypeDemo class.  
+```
+- [download this Prototype Pattern Example](src/PrototypePattern.zip)
+- Output
+
+![prototypeoutput](images/prototypeoutput.jpg)
+
 ### 1.5 Builder Pattern
+Builder Pattern says that **`construct a complex object from simple objects using step-by-step approach`**
+
+It is mostly used when object can't be created in single step like in the de-serialization of a complex object.
+
+#### Advantage of Builder Design Pattern
+
+The main advantages of Builder Pattern are as follows:
+
+- It provides clear separation between the construction and representation of an object.
+- It provides better control over construction process.
+- It supports to change the internal representation of objects.
+
+#### UML for Builder Pattern Example
+
+![Builder Pattern Example](images/builderuml1.jpg)
+
+#### Example of Builder Design Pattern
+To create simple example of builder design pattern, you need to follow 6 following steps.
+
+- 1) [Create Packing interface](#create-packing-interface)
+- 2) Create 2 abstract classes CD and Company
+- 3) Create 2 implementation classes of Company: Sony and Samsung
+- 4) Create the CDType class
+- 5)  Create the CDBuilder class
+- 6)  Create the BuilderDemo class
+
+##### 1) Create Packing interface
+*File: Packing.java*
+```java
+public interface Packing {
+    public String pack();
+
+    public int price();
+} 
+```
+##### 2) Create 2 abstract classes CD and Company
+Create an abstract class CD which will implement Packing interface.
+*File: CD.java*
+```java
+public abstract class CD implements Packing {
+    public abstract String pack();
+}
+```
+*File: Company.java*
+```java
+public abstract class Company extends CD {
+    public abstract int price();
+} 
+```
+##### 3) Create 2 implementation classes of Company: Sony and Samsung
+*File: Sony.java*
+```java
+public class Sony extends Company {
+    @Override
+    public int price() {
+        return 20;
+    }
+
+    @Override
+    public String pack() {
+        return "Sony CD";
+    }
+}//End of the Sony class.  
+```
+*File: Samsung.java*
+```java
+public class Samsung extends Company {
+    @Override
+    public int price() {
+        return 15;
+    }
+
+    @Override
+    public String pack() {
+        return "Samsung CD";
+    }
+}//End of the Samsung class.  
+```
+##### 4) Create the CDType class
+*File: CDType.java*
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class CDType {
+    private List<Packing> items = new ArrayList<Packing>();
+
+    public void addItem(Packing packs) {
+        items.add(packs);
+    }
+
+    public void getCost() {
+        for (Packing packs : items) {
+            packs.price();
+        }
+    }
+
+    public void showItems() {
+        for (Packing packing : items) {
+            System.out.print("CD name : " + packing.pack());
+            System.out.println(", Price : " + packing.price());
+        }
+    }
+}//End of the CDType class.  
+```
+##### 5) Create the CDBuilder class
+*File: CDBuilder.java*
+```java
+public class CDBuilder {
+    public CDType buildSonyCD() {
+        CDType cds = new CDType();
+        cds.addItem(new Sony());
+        return cds;
+    }
+
+    public CDType buildSamsungCD() {
+        CDType cds = new CDType();
+        cds.addItem(new Samsung());
+        return cds;
+    }
+}// End of the CDBuilder class.  
+```
+##### 6) Create the BuilderDemo class
+*File: BuilderDemo.java*
+```java
+public class BuilderDemo {
+    public static void main(String args[]) {
+        CDBuilder cdBuilder = new CDBuilder();
+        CDType cdType1 = cdBuilder.buildSonyCD();
+        cdType1.showItems();
+
+        CDType cdType2 = cdBuilder.buildSamsungCD();
+        cdType2.showItems();
+    }
+}  
+```
+#### [download this builder pattern example](src/builder1.zip)
+
+#### Output of the above example
+```java
+CD name : Sony CD, Price : 20  
+CD name : Samsung CD, Price : 15
+```
+
+#### Another Real world example of Builder Pattern
+##### UML for Builder Pattern:
+We are considering a business case of `pizza-hut` where we can get different varieties of pizza and cold-drink.
+
+`Pizza` can be either a Veg pizza or Non-Veg pizza of several types (like cheese pizza, onion pizza, masala-pizza etc) and will be of 4 sizes i.e. small, medium, large, extra-large.
+
+`Cold-drink` can be of several types (like Pepsi, Coke, Dew, Sprite, Fanta, Maaza, Limca, Thums-up etc.) and will be of 3 sizes small, medium, large.
+![Pizza Builder](images/builderuml2.jpg)
+
+##### Real world example of builder pattern
+Let's see the step by step real world example of Builder Design Pattern.
+- Step 1:**Create an interface Item that represents the Pizza and Cold-drink**.
+*File: Item.java*
+```java
+public interface Item {
+    public String name();
+
+    public String size();
+
+    public float price();
+}// End of the interface Item.  
+```
+- Step 2:**Create an abstract class Pizza that will implement to the interface Item**.
+*File: Pizza.java*
+```java
+public abstract class Pizza implements Item {
+    @Override
+    public abstract float price();
+}
+```
+- Step 3:**Create an abstract class ColdDrink that will implement to the interface Item**.
+*File: ColdDrink.java*
+```java
+public abstract class ColdDrink implements Item {
+    @Override
+    public abstract float price();
+}
+```
+- Step 4:**Create an abstract class VegPizza that will extend to the abstract class Pizza**.
+*File: VegPizza.java*
+```java
+public abstract class VegPizza extends Pizza {
+    @Override
+    public abstract float price();
+
+    @Override
+    public abstract String name();
+
+    @Override
+    public abstract String size();
+}// End of the abstract class VegPizza.  
+```
+- Step 5:**Create an abstract class NonVegPizza that will extend to the abstract class Pizza**.
+*File: NonVegPizza.java*
+```java
+public abstract class NonVegPizza extends Pizza {
+    @Override
+    public abstract float price();
+
+    @Override
+    public abstract String name();
+
+    @Override
+    public abstract String size();
+}// End of the abstract class NonVegPizza. 
+```
+- Step 6:**Now, create concrete sub-classes SmallCheezePizza, MediumCheezePizza, LargeCheezePizza, ExtraLargeCheezePizza that will extend to the abstract class VegPizza**.
+*File: SmallCheezePizza.java*
+```java
+public class SmallCheezePizza extends VegPizza {
+    @Override
+    public float price() {
+        return 170.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Cheeze Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Small size";
+    }
+}// End of the SmallCheezePizza class.  
+```
+*File: MediumCheezePizza.java*
+```java
+public class MediumCheezePizza extends VegPizza {
+    @Override
+    public float price() {
+        return 220.f;
+    }
+
+    @Override
+    public String name() {
+        return "Cheeze Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Medium Size";
+    }
+}// End of the MediumCheezePizza class.  
+```
+
+*File: LargeCheezePizza.java*
+```java
+public class LargeCheezePizza extends VegPizza {
+    @Override
+    public float price() {
+        return 260.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Cheeze Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Large Size";
+    }
+}// End of the LargeCheezePizza class.  
+```
+
+*File: ExtraLargeCheezePizza.java*
+```java
+public class ExtraLargeCheezePizza extends VegPizza {
+    @Override
+    public float price() {
+        return 300.f;
+    }
+
+    @Override
+    public String name() {
+        return "Cheeze Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Extra-Large Size";
+    }
+}// End of the ExtraLargeCheezePizza class.  
+```
+
+- Step 7:**Now, similarly create concrete sub-classes SmallOnionPizza, MediumOnionPizza, LargeOnionPizza, ExtraLargeOnionPizza that will extend to the abstract class VegPizza**.
+
+*File: SmallOnionPizza.java*
+
+```java
+public class SmallOnionPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 120.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Onion Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Small Size";
+    }
+}// End of the SmallOnionPizza class.  
+```
+
+*File: MediumOnionPizza.java*
+```java
+public class MediumOnionPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 150.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Onion Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Medium Size";
+    }
+}// End of the MediumOnionPizza class.  
+```
+*File: LargeOnionPizza.java*
+```java
+public class LargeOnionPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 180.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Onion Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Large size";
+    }
+}// End of the LargeOnionPizza class.  
+```
+
+*File: ExtraLargeOnionPizza.java*
+```java
+public class ExtraLargeOnionPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 200.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Onion Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Extra-Large Size";
+    }
+}// End of the ExtraLargeOnionPizza class  
+```
+
+- Step 8:**Now, similarly create concrete sub-classes SmallMasalaPizza, MediumMasalaPizza, LargeMasalaPizza, ExtraLargeMasalaPizza that will extend to the abstract class VegPizza.**
+
+*File: SmallMasalaPizza.java*
+```java
+public class SmallMasalaPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 100.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Masala Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Samll Size";
+    }
+}// End of the SmallMasalaPizza class  
+```
+*File: MediumMasalaPizza.java*
+```java
+public class MediumMasalaPizza extends VegPizza {
+
+    @Override
+    public float price() {
+        return 120.0f;
+    }
+
+    @Override
+    public String name() {
+
+        return "Masala Pizza";
+
+    }
+
+    @Override
+    public String size() {
+        return "Medium Size";
+    }
+}
+```
+*File: LargeMasalaPizza.java*
+```java
+public class LargeMasalaPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 150.0f;
+    }
+
+    @Override
+    public String name() {
+
+        return "Masala Pizza";
+
+    }
+
+    @Override
+    public String size() {
+        return "Large Size";
+    }
+} //End of the LargeMasalaPizza class  
+```
+
+*File: ExtraLargeMasalaPizza.java*
+```java
+public class ExtraLargeMasalaPizza extends VegPizza {
+    @Override
+    public float price() {
+        return 180.0f;
+    }
+
+    @Override
+    public String name() {
+
+        return "Masala Pizza";
+
+    }
+
+    @Override
+    public String size() {
+        return "Extra-Large Size";
+    }
+}// End of the ExtraLargeMasalaPizza class  
+```
+
+- Step 9:**Now, create concrete sub-classes SmallNonVegPizza, MediumNonVegPizza, LargeNonVegPizza, ExtraLargeNonVegPizza that will extend to the abstract class NonVegPizza**.
+
+*File: SmallNonVegPizza.java*
+```java
+public class SmallNonVegPizza extends NonVegPizza {
+
+    @Override
+    public float price() {
+        return 180.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Non-Veg Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Samll Size";
+    }
+
+}// End of the SmallNonVegPizza class 
+```
+
+*File: MediumNonVegPizza.java*
+```java
+public class MediumNonVegPizza extends NonVegPizza {
+
+    @Override
+    public float price() {
+        return 200.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Non-Veg Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Medium Size";
+    }
+}
+```
+*File: LargeNonVegPizza.java*
+```java
+public class LargeNonVegPizza extends NonVegPizza {
+
+    @Override
+    public float price() {
+        return 220.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Non-Veg Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Large Size";
+    }
+
+}// End of the LargeNonVegPizza class  
+```
+
+*File: ExtraLargeNonVegPizza.java*
+```
+public class ExtraLargeNonVegPizza extends NonVegPizza {
+    @Override
+    public float price() {
+        return 250.0f;
+    }
+
+    @Override
+    public String name() {
+        return "Non-Veg Pizza";
+    }
+
+    @Override
+    public String size() {
+        return "Extra-Large Size";
+    }
+
+}// End of the ExtraLargeNonVegPizza class  
+```
+- Step 10:**Now, create two abstract classes Pepsi and Coke that will extend abstract class ColdDrink**.
+
+*File: Pepsi.java*
+```java
+public abstract class Pepsi extends ColdDrink {
+
+    @Override
+    public abstract String name();
+
+    @Override
+    public abstract String size();
+
+    @Override
+    public abstract float price();
+
+}// End of the Pepsi class 
+```
+
+*File: Coke.java*
+```java
+public abstract class Coke extends ColdDrink {
+
+    @Override
+    public abstract String name();
+
+    @Override
+    public abstract String size();
+
+    @Override
+    public abstract float price();
+
+}// End of the Coke class
+```
+
+- Step 11: **Now, create concrete sub-classes SmallPepsi, MediumPepsi, LargePepsi that will extend to the abstract class Pepsi.**
+
+*File: SmallPepsi.java*
+```java
+public class SmallPepsi extends Pepsi {
+
+    @Override
+    public String name() {
+        return "300 ml Pepsi";
+    }
+
+    @Override
+    public float price() {
+        return 25.0f;
+    }
+
+    @Override
+    public String size() {
+        return "Small Size";
+    }
+}// End of the SmallPepsi class
+```
+
+*File: MediumPepsi.java*
+```java
+public class MediumPepsi extends Pepsi {
+
+    @Override
+    public String name() {
+        return "500 ml Pepsi";
+    }
+
+    @Override
+    public String size() {
+        return "Medium Size";
+    }
+
+    @Override
+    public float price() {
+        return 35.0f;
+    }
+}// End of the MediumPepsi class
+```
+
+*File: LargePepsi.java*
+```java
+public class LargePepsi extends Pepsi {
+    @Override
+    public String name() {
+        return "750 ml Pepsi";
+    }
+
+    @Override
+    public String size() {
+        return "Large Size";
+    }
+
+    @Override
+    public float price() {
+        return 50.0f;
+    }
+}// End of the LargePepsi class 
+```
+
+- Step 12:**Now, create concrete sub-classes SmallCoke, MediumCoke, LargeCoke that will extend to the abstract class Coke**.
+
 
 ## 2. Structural Design Pattern
 ### 2.1 Adapter Pattern
