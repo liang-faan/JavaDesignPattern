@@ -427,11 +427,8 @@ class A {
 }
 ```
 #### Significance of Classloader in Singleton Pattern
-@octocat :+1: This PR looks great - it's ready to merge! :shipit:
+:book: If singleton class is loaded by two classloaders, two instance of singleton class will be created, one for each classloader.
 
-```
-If singleton class is loaded by two classloaders, two instance of singleton class will be created, one for each classloader.
-```
 
 ### 1.4 Prototype Pattern
 ### 1.5 Builder Pattern
