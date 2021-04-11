@@ -2884,9 +2884,669 @@ Salary =30000.0
 ```
 
 ### 2.4 Decorator Pattern
+
+A Decorator Pattern says that just **"attach a flexible additional responsibilities to an object dynamically"**.
+
+In other words, The Decorator Pattern uses composition instead of inheritance to extend the functionality of an object at runtime.
+
+The Decorator Pattern is also known as **Wrapper**.
+
+#### Advantage of Decorator Pattern
+
+- It provides greater flexibility than static inheritance.
+- It enhances the extensibility of the object, because changes are made by coding new classes.
+- It simplifies the coding by allowing you to develop a series of functionality from targeted classes instead of coding all of the behavior into the object.
+
+#### Usage of Decorator Pattern
+
+It is used:
+
+- When you want to transparently and dynamically add responsibilities to objects without affecting other objects.
+- When you want to add responsibilities to an object that you may want to change in future.
+- Extending functionality by sub-classing is no longer practical.
+
+#### UML for Decorator Pattern
+
+![UML for Decorator Pattern](images/decoratoruml.jpg)
+
+#### Implemenation of above Decorator Pattern
+
+- Step 1:Create a Food interface.
+
+*File: Food.java*
+```java
+public interface Food {
+    public String prepareFood();
+
+    public double foodPrice();
+}// End of the Food interface.  
+```
+
+- Step 2: Create a **VegFood** class that will implements the **Food** interface and override its all methods.
+
+*File: VegFood.java*
+```java
+public class VegFood implements Food {
+    public String prepareFood() {
+        return "Veg Food";
+    }
+
+    public double foodPrice() {
+        return 50.0;
+    }
+}
+```
+
+- Step 3:Create a **FoodDecorator** abstract class that will implements the **Food** interface and override it's all methods and it has the ability to decorate some more foods.
+
+*File: FoodDecorator.java*
+
+```java
+public abstract class FoodDecorator implements Food {
+    private Food newFood;
+
+    public FoodDecorator(Food newFood) {
+        this.newFood = newFood;
+    }
+
+    @Override
+    public String prepareFood() {
+        return newFood.prepareFood();
+    }
+
+    public double foodPrice() {
+        return newFood.foodPrice();
+    }
+}  
+```
+
+- Step 4:Create a **NonVegFood** concrete class that will extend the **FoodDecorator** class and override it's all methods.
+
+*File: NonVegFood.java*
+```java
+public class NonVegFood extends FoodDecorator {
+    public NonVegFood(Food newFood) {
+        super(newFood);
+    }
+
+    public String prepareFood() {
+        return super.prepareFood() + " With Roasted Chiken and Chiken Curry  ";
+    }
+
+    public double foodPrice() {
+        return super.foodPrice() + 150.0;
+    }
+}
+```
+
+- Step 5:Create a **ChineeseFood** concrete class that will extend the **FoodDecorator** class and override it's all methods.
+
+*File: ChineeseFood.java*
+```java
+public class ChineeseFood extends FoodDecorator {
+    public ChineeseFood(Food newFood) {
+        super(newFood);
+    }
+
+    public String prepareFood() {
+        return super.prepareFood() + " With Fried Rice and Manchurian  ";
+    }
+
+    public double foodPrice() {
+        return super.foodPrice() + 65.0;
+    }
+}
+```
+
+- Step 6:Create a **DecoratorPatternCustomer** class that will use **Food** interface to use which type of food customer wants means (Decorates).
+
+*File: DecoratorPatternCustomer.java*
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class DecoratorPatternCustomer {
+    private static int choice;
+
+    public static void main(String args[]) throws NumberFormatException, IOException {
+        do {
+            System.out.print("========= Food Menu ============ \n");
+            System.out.print("            1. Vegetarian Food.   \n");
+            System.out.print("            2. Non-Vegetarian Food.\n");
+            System.out.print("            3. Chineese Food.         \n");
+            System.out.print("            4. Exit                        \n");
+            System.out.print("Enter your choice: ");
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            choice = Integer.parseInt(br.readLine());
+            switch (choice) {
+                case 1: {
+                    VegFood vf = new VegFood();
+                    System.out.println(vf.prepareFood());
+                    System.out.println(vf.foodPrice());
+                }
+                break;
+
+                case 2: {
+                    Food f1 = new NonVegFood((Food) new VegFood());
+                    System.out.println(f1.prepareFood());
+                    System.out.println(f1.foodPrice());
+                }
+                break;
+                case 3: {
+                    Food f2 = new ChineeseFood((Food) new VegFood());
+                    System.out.println(f2.prepareFood());
+                    System.out.println(f2.foodPrice());
+                }
+                break;
+
+                default: {
+                    System.out.println("Other than these no food available");
+                }
+                return;
+            }//end of switch  
+
+        } while (choice != 4);
+    }
+}
+```
+#### [download this Decorator Pattern Example](src/decoratorpattern.zip)
+
+#### Output
+
+```java
+========= Food Menu ============  
+            1. Vegetarian Food.  
+            2. Non-Vegetarian Food.  
+            3. Chineese Food.  
+            4. Exit  
+Enter your choice: 1  
+Veg Food  
+50.0  
+========= Food Menu ============  
+            1. Vegetarian Food.  
+            2. Non-Vegetarian Food.  
+            3. Chineese Food.  
+            4. Exit  
+Enter your choice: 2  
+Veg Food With Roasted Chiken and Chiken Curry  
+200.0  
+========= Food Menu ============  
+            1. Vegetarian Food.  
+            2. Non-Vegetarian Food.  
+            3. Chineese Food.  
+            4. Exit  
+Enter your choice: 3  
+Veg Food With Fried Rice and Manchurian  
+115.0  
+========= Food Menu ============  
+            1. Vegetarian Food.  
+            2. Non-Vegetarian Food.  
+            3. Chineese Food.  
+            4. Exit  
+Enter your choice: 4  
+Other than these no food available  
+```
+
 ### 2.5 Facade Pattern
+
+A Facade Pattern says that just **"just provide a unified and simplified interface to a set of interfaces in a subsystem, therefore it hides the complexities of the subsystem from the client"**.
+
+In other words, Facade Pattern describes a higher-level interface that makes the sub-system easier to use.
+
+Practically, every **Abstract Factory** is a type of Facade.
+
+#### Advantage of Facade Pattern
+- It shields the clients from the complexities of the sub-system components.
+- It promotes loose coupling between subsystems and its clients.
+
+#### Usage of Facade Pattern
+
+It is used:
+
+- When you want to provide simple interface to a complex sub-system.
+- When several dependencies exist between clients and the implementation classes of an abstraction.
+
+#### Example of Facade Pattern
+Let's understand the example of facade design pattern by the above UML diagram.
+
+#### UML for Facade Pattern
+
+![UML for Facade Pattern](images/facadeuml.jpg)
+
+#### Implementation of above UML
+
+- Step 1 Create a **MobileShop** interface.
+
+*File: MobileShop.java*
+```java
+public interface MobileShop {
+    public void modelNo();
+
+    public void price();
+}
+```
+
+- Step 2 Create a **Iphone** implementation class that will implement **Mobileshop** interface.
+*File: Iphone.java*
+```java
+public class Iphone implements MobileShop {
+    @Override
+    public void modelNo() {
+        System.out.println(" Iphone 6 ");
+    }
+
+    @Override
+    public void price() {
+        System.out.println(" Rs 65000.00 ");
+    }
+} 
+```
+
+- Step 3 Create a **Samsung** implementation class that will implement **Mobileshop** interface.
+*File: Samsung.java*
+```java
+public class Samsung implements MobileShop {
+    @Override
+    public void modelNo() {
+        System.out.println(" Samsung galaxy tab 3 ");
+    }
+
+    @Override
+    public void price() {
+        System.out.println(" Rs 45000.00 ");
+    }
+}
+```
+
+- Step 4 Create a **Blackberry** implementation class that will implement **Mobileshop** interface.
+
+*File: Blackberry.java*
+```java
+public class Blackberry implements MobileShop {
+    @Override
+    public void modelNo() {
+        System.out.println(" Blackberry Z10 ");
+    }
+
+    @Override
+    public void price() {
+        System.out.println(" Rs 55000.00 ");
+    }
+}
+```
+
+- Step 5 Create a **ShopKeeper** concrete class that will use **MobileShop** interface.
+*File: ShopKeeper.java*
+
+```java
+public class ShopKeeper {
+    private MobileShop iphone;
+    private MobileShop samsung;
+    private MobileShop blackberry;
+
+    public ShopKeeper() {
+        iphone = new Iphone();
+        samsung = new Samsung();
+        blackberry = new Blackberry();
+    }
+
+    public void iphoneSale() {
+        iphone.modelNo();
+        iphone.price();
+    }
+
+    public void samsungSale() {
+        samsung.modelNo();
+        samsung.price();
+    }
+
+    public void blackberrySale() {
+        blackberry.modelNo();
+        blackberry.price();
+    }
+}
+```
+
+- Step 6 Now, Creating a client that can purchase the mobiles from **MobileShop** through **ShopKeeper**.
+*File: FacadePatternClient.java*
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class FacadePatternClient {
+    private static int choice;
+
+    public static void main(String args[]) throws NumberFormatException, IOException {
+        do {
+            System.out.print("========= Mobile Shop ============ \n");
+            System.out.print("            1. IPHONE.              \n");
+            System.out.print("            2. SAMSUNG.              \n");
+            System.out.print("            3. BLACKBERRY.            \n");
+            System.out.print("            4. Exit.                     \n");
+            System.out.print("Enter your choice: ");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            choice = Integer.parseInt(br.readLine());
+            ShopKeeper sk = new ShopKeeper();
+
+            switch (choice) {
+                case 1: {
+                    sk.iphoneSale();
+                }
+                break;
+                case 2: {
+                    sk.samsungSale();
+                }
+                break;
+                case 3: {
+                    sk.blackberrySale();
+                }
+                break;
+                default: {
+                    System.out.println("Nothing You purchased");
+                }
+                return;
+            }
+
+        } while (choice != 4);
+    }
+}
+```
+
+#### [download this example](src/facadepattern.zip)
+
+#### Output
+```java
+========= Mobile Shop ============  
+            1. IPHONE.  
+            2. SAMSUNG.  
+            3. BLACKBERRY.  
+            4. Exit.  
+Enter your choice: 1  
+ Iphone 6  
+ Rs 65000.00  
+========= Mobile Shop ============  
+            1. IPHONE.  
+            2. SAMSUNG.  
+            3. BLACKBERRY.  
+            4. Exit.  
+Enter your choice: 2  
+ Samsung galaxy tab 3  
+ Rs 45000.00  
+========= Mobile Shop ============  
+            1. IPHONE.  
+            2. SAMSUNG.  
+            3. BLACKBERRY.  
+            4. Exit.  
+Enter your choice: 3  
+ Blackberry Z10  
+ Rs 55000.00  
+========= Mobile Shop ============  
+            1. IPHONE.  
+            2. SAMSUNG.  
+            3. BLACKBERRY.  
+            4. Exit.  
+Enter your choice: 4  
+Nothing You purchased
+```
+
 ### 2.6 Flyweight Pattern
+
+A Flyweight Pattern says that just **"to reuse already existing similar kind of objects by storing them and create new object when no matching object is found"**.
+
+#### Advantage of Flyweight Pattern
+- It reduces the number of objects.
+- It reduces the amount of memory and storage devices required if the objects are persisted
+
+#### Usage of Flyweight Pattern
+- When an application uses number of objects
+- When the storage cost is high because of the quantity of objects.
+- When the application does not depend on object identity.
+
+#### UML Flyweight Pattern
+
+![](images/flyweight-pattern-class-diagram.jpg)
+
+#### Flyweight Implementation Sample
+
+- Create **Coffe** Context
+```java
+// Flyweight object interface
+interface ICoffee {
+    public void serveCoffee(CoffeeContext context);
+}
+```
+
+```java
+// Concrete Flyweight object  
+class Coffee implements ICoffee {
+    private final String flavor;
+
+    public Coffee(String newFlavor) {
+        this.flavor = newFlavor;
+        System.out.println("Coffee is created! - " + flavor);
+    }
+
+    public String getFlavor() {
+        return this.flavor;
+    }
+
+    public void serveCoffee(CoffeeContext context) {
+        System.out.println("Serving " + flavor + " to table " + context.getTable());
+    }
+}
+
+
+```
+
+```java
+// A context, here is table number
+class CoffeeContext {
+    private final int tableNumber;
+
+    public CoffeeContext(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public int getTable() {
+        return this.tableNumber;
+    }
+}
+```
+
+- CoffeeFactory: it only create a new coffee when necessary.
+```java
+//The FlyweightFactory!
+class CoffeeFactory {
+ 
+    private HashMap<String, Coffee> flavors = new HashMap<String, Coffee>();
+ 
+    public Coffee getCoffeeFlavor(String flavorName) {
+        Coffee flavor = flavors.get(flavorName);
+        if (flavor == null) {
+            flavor = new Coffee(flavorName);
+            flavors.put(flavorName, flavor);
+        }
+        return flavor;
+    }
+ 
+    public int getTotalCoffeeFlavorsMade() {
+        return flavors.size();
+    }
+}
+```
+
+- Waitress serving coffee
+```java
+public class Waitress {
+   //coffee array
+   private static Coffee[] coffees = new Coffee[20];
+   //table array
+   private static CoffeeContext[] tables = new CoffeeContext[20];
+   private static int ordersCount = 0;
+   private static CoffeeFactory coffeeFactory;
+ 
+   public static void takeOrder(String flavorIn, int table) {
+	   coffees[ordersCount] = coffeeFactory.getCoffeeFlavor(flavorIn);
+       tables[ordersCount] = new CoffeeContext(table);
+       ordersCount++;
+   }
+ 
+   public static void main(String[] args) {
+	   coffeeFactory = new CoffeeFactory();
+ 
+       takeOrder("Cappuccino", 2);
+       takeOrder("Cappuccino", 2);
+       takeOrder("Regular Coffee", 1);
+       takeOrder("Regular Coffee", 2);
+       takeOrder("Regular Coffee", 3);
+       takeOrder("Regular Coffee", 4);
+       takeOrder("Cappuccino", 4);
+       takeOrder("Cappuccino", 5);
+       takeOrder("Regular Coffee", 3);
+       takeOrder("Cappuccino", 3);
+ 
+       for (int i = 0; i < ordersCount; ++i) {
+    	   coffees[i].serveCoffee(tables[i]);
+       }
+ 
+       System.out.println("\nTotal Coffee objects made: " +  coffeeFactory.getTotalCoffeeFlavorsMade());
+   }
+}
+```
+
+#### Check out the output below, coffee is served to 10 tables, but only 2 coffees are created ever!
+
+```java
+Coffee is created! - Cappuccino
+Coffee is created! - Regular Coffee
+Serving Cappuccino to table 2
+Serving Cappuccino to table 2
+Serving Regular Coffee to table 1
+Serving Regular Coffee to table 2
+Serving Regular Coffee to table 3
+Serving Regular Coffee to table 4
+Serving Cappuccino to table 4
+Serving Cappuccino to table 5
+Serving Regular Coffee to table 3
+Serving Cappuccino to table 3
+
+Total Coffee objects made: 2
+```
+
 ### 2.7 Proxy Pattern
+
+Simply, proxy means an object representing another object.
+
+According to GoF, a Proxy Pattern **"provides the control for accessing the original object"**.
+
+So, we can perform many operations like hiding the information of original object, on demand loading etc.
+
+Proxy pattern is also known as **Surrogate or Placeholder**.
+
+:book: `RMI API uses proxy design pattern. Stub and Skeleton are two proxy objects used in RMI.`
+
+
+#### Advantage of Proxy Pattern
+- It provides the protection to the original object from the outside world.
+
+#### Usage of Proxy Pattern
+
+It is used:
+
+- It can be used in **Virtual Proxy** scenario: Consider a situation where there is multiple database call to extract huge size image. Since this is an expensive operation so here we can use the proxy pattern which would create multiple proxies and point to the huge size memory consuming object for further processing. The real object gets created only when a client first requests/accesses the object and after that we can just refer to the proxy to reuse the object. This avoids duplication of the object and hence saving memory.
+- It can be used in **Protective Proxy** scenario: It acts as an authorization layer to verify that whether the actual user has access the appropriate content or not. For example, a proxy server which provides restriction on internet access in office. Only the websites and contents which are valid will be allowed and the remaining ones will be blocked.
+- It can be used in **Remote Proxy** scenario: A remote proxy can be thought about the stub in the RPC call. The remote proxy provides a local representation of the object which is present in the different address location. Another example can be providing interface for remote resources such as web service or REST resources.
+- It can be used in **Smart Proxy** scenario: A smart proxy provides additional layer of security by interposing specific actions when the object is accessed. For example, to check whether the real object is locked or not before accessing it so that no other objects can change it.- -
+
+
+#### Example of Proxy Pattern
+Let's understand the example of proxy design pattern by the above UML diagram.
+
+#### UML for Proxy Pattern
+
+![UML for Proxy Pattern](images/proxyuml.jpg)
+
+#### Implementation of above UML
+
+- Step 1 Create an OfficeInternetAccess interface.
+
+```java
+public interface OfficeInternetAccess {
+    public void grantInternetAccess();
+} 
+```
+
+- Step 2 Create a **RealInternetAccess** class that will implement **OfficeInternetAccess** interface for granting the permission to the specific employee.
+
+*File: RealInternetAccess.java*
+```java
+public class RealInternetAccess implements OfficeInternetAccess {
+    private String employeeName;
+
+    public RealInternetAccess(String empName) {
+        this.employeeName = empName;
+    }
+
+    @Override
+    public void grantInternetAccess() {
+        System.out.println("Internet Access granted for employee: " + employeeName);
+    }
+}
+```
+
+- Step 3 Create a **ProxyInternetAccess** class that will implement **OfficeInternetAccess** interface for providing the object of **RealInternetAccess** class.
+
+*File: ProxyInternetAccess.java*
+```java
+public class ProxyInternetAccess implements OfficeInternetAccess {
+    private String employeeName;
+    private RealInternetAccess realaccess;
+
+    public ProxyInternetAccess(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    @Override
+    public void grantInternetAccess() {
+        if (getRole(employeeName) > 4) {
+            realaccess = new RealInternetAccess(employeeName);
+            realaccess.grantInternetAccess();
+        } else {
+            System.out.println("No Internet access granted. Your job level is below 5");
+        }
+    }
+
+    public int getRole(String emplName) {
+        // Check role from the database based on Name and designation  
+        // return job level or job designation.  
+        return 9;
+    }
+}
+```
+
+- Step 4 Now, Create a **ProxyPatternClient** class that can access the internet actually.
+
+*File: ProxyPatternClient.java*
+
+```java
+public class ProxyPatternClient {
+    public static void main(String[] args) {
+        OfficeInternetAccess access = new ProxyInternetAccess("Ashwani Rajput");
+        access.grantInternetAccess();
+    }
+}
+```
+
+#### [download Proxy Patter Sample] (src/proxypattern.zip)
+
+#### Sample Output
+
+```java
+No Internet access granted. Your job level is below 5  
+```
 
 ## 3. Behavioral Design Pattern
 ### 3.1 Chain Of Responsibility Pattern
