@@ -50,7 +50,7 @@ The Factory Method Pattern is also known as **`Virtual Constructor`**.
 - GenerateBill class will use GetPlanFactory to get a Plan object. It will pass information (DOMESTICPLAN / COMMERCIALPLAN / INSTITUTIONALPLAN) to GetPalnFactory to get the type of object it needs.
 ![UML for Factory Method Pattern](/images/factorymethod.jpg)
 #### Calculate Electricity Bill : A Real World Example of Factory Method
-Step 1: Create a Plan abstract class.
+- Step 1: Create a Plan abstract class.
 ```java
 import java.io.*;      
 abstract class Plan{  
@@ -62,7 +62,7 @@ abstract class Plan{
           }  
 }//end of Plan class.
 ```
-Step 2: Create the concrete classes that extends Plan abstract class.
+- Step 2: Create the concrete classes that extends Plan abstract class.
 ```java
 class  DomesticPlan extends Plan{  
         //@override  
@@ -83,7 +83,7 @@ class  InstitutionalPlan extends Plan{
         rate=5.50;  
    } //end of InstitutionalPlan class.  
 ```
-Step 3: Create a GetPlanFactory to generate object of concrete classes based on given information.
+- Step 3: Create a GetPlanFactory to generate object of concrete classes based on given information.
 ```java
 class GetPlanFactory{  
       
@@ -105,7 +105,7 @@ class GetPlanFactory{
    }  
 }//end of GetPlanFactory class.  
 ```
-Step 4: Generate Bill by using the GetPlanFactory to get the object of concrete classes by passing an information such as type of plan DOMESTICPLAN or COMMERCIALPLAN or INSTITUTIONALPLAN.
+- Step 4: Generate Bill by using the GetPlanFactory to get the object of concrete classes by passing an information such as type of plan DOMESTICPLAN or COMMERCIALPLAN or INSTITUTIONALPLAN.
 ```java
 import java.io.*;    
 class GenerateBill{  
@@ -128,8 +128,9 @@ class GenerateBill{
             }  
     }//end of GenerateBill class.  
 ```
-Output
-![](/images/factorymethodoutput.jpg)
+- Output
+    ![Sample Output](/images/factorymethodoutput.jpg)
+- [Source Code Download](/src/factorymethodpattern.zip)
 ### 1.2 Abstract Factory Pattern
 ### 1.3 Singleton Pattern
 ### 1.4 Prototype Pattern
