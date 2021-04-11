@@ -3765,7 +3765,7 @@ public class Document {
 }
 ```
 
-Step 3 Create a **ActionOpen** class that will act as an ConcreteCommand.
+- Step 3 Create a **ActionOpen** class that will act as an ConcreteCommand.
 
 *File: ActionOpen.java*
 ```java
@@ -3813,7 +3813,7 @@ public class ActionSave implements ActionListenerCommand{
 } 
 ```
 
-Step 6 Create a **CommanPatternClient** class that will act as a Client.
+- Step 6 Create a **CommanPatternClient** class that will act as a Client.
 
 *File: AdapterPatternDemo.java*
 ```java
