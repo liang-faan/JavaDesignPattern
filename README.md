@@ -3549,8 +3549,297 @@ No Internet access granted. Your job level is below 5
 ```
 
 ## 3. Behavioral Design Pattern
+Behavioral design patterns are concerned with the **interaction and responsibility of objects**.
+
+In these design patterns,**the interaction between the objects should be in such a way that they can easily talk to each other and still should be loosely coupled**.
+
+That means the implementation and the client should be loosely coupled in order to avoid hard coding and dependencies.
+
+There are 12 types of structural design patterns:
+- 1) [Chain Of Responsibility Pattern](#31-chain-of-responsibility-pattern-1)
+- 2) [Command Pattern](#32-command-pattern-1)
+- 3) [Interpreter Pattern](#33-interpreter-pattern-1)
+- 4) [Iterator Pattern](#34-iterator-pattern-1)
+- 5) [Mediator Pattern](#35-mediator-pattern-1)
+- 6) [Memento Pattern](#36-memento-pattern-1)
+- 7) [Observer Pattern](#37-observer-pattern-1)
+- 8) [State Pattern](#38-state-pattern-1)
+- 9) [Strategy Pattern](#39-strategy-pattern-1)
+- 10) [Template Pattern](#310-template-pattern-1)
+- 11) [Visitor Pattern](#311-visitor-pattern-1)
+
+
 ### 3.1 Chain Of Responsibility Pattern
+
+In chain of responsibility, sender sends a request to a chain of objects. The request can be handled by any object in the chain.
+
+A Chain of Responsibility Pattern says that just **"avoid coupling the sender of a request to its receiver by giving multiple objects a chance to handle the request"**. For example, an ATM uses the Chain of Responsibility design pattern in money giving process.
+
+In other words, we can say that normally each receiver contains reference of another receiver. If one object cannot handle the request then it passes the same to the next receiver and so on.
+
+#### Advantage of Chain of Responsibility Pattern
+
+- It reduces the coupling.
+- It adds flexibility while assigning the responsibilities to objects.
+- It allows a set of classes to act as one; events produced in one class can be sent to other handler classes with the help of composition.
+
+#### Usage of Chain of Responsibility Pattern
+It is used:
+
+- When more than one object can handle a request and the handler is unknown.
+- When the group of objects that can handle the request must be specified in dynamic way.
+
+#### Example of Chain of Responsibility Pattern
+
+Let's understand the example of Chain of Responsibility Pattern by the above UML diagram.
+
+#### UML for Chain of Responsibility Pattern
+![UML for Chain of Responsibility Pattern](images/chainofresponsibilityuml.jpg)
+
+#### Implementation of above UML
+
+- Step 1 Create a **Logger** abstract class.
+```java
+public abstract class Logger {
+    public static int OUTPUTINFO = 1;
+    public static int ERRORINFO = 2;
+    public static int DEBUGINFO = 3;
+    protected int levels;
+    protected Logger nextLevelLogger;
+
+    public void setNextLevelLogger(Logger nextLevelLogger) {
+        this.nextLevelLogger = nextLevelLogger;
+    }
+
+    public void logMessage(int levels, String msg) {
+        if (this.levels <= levels) {
+            displayLogInfo(msg);
+        }
+        if (nextLevelLogger != null) {
+            nextLevelLogger.logMessage(levels, msg);
+        }
+    }
+
+    protected abstract void displayLogInfo(String msg);
+}
+```
+
+- Step 2 Create a **ConsoleBasedLogger** class.
+
+*File: ConsoleBasedLogger.java*
+```java
+public class ConsoleBasedLogger extends Logger {
+    public ConsoleBasedLogger(int levels) {
+        this.levels = levels;
+    }
+
+    @Override
+    protected void displayLogInfo(String msg) {
+        System.out.println("CONSOLE LOGGER INFO: " + msg);
+    }
+}
+```
+
+- Step 3 Create a **DebugBasedLogger** class.
+*File: DebugBasedLogger.java*
+```java
+public class DebugBasedLogger extends Logger {
+    public DebugBasedLogger(int levels) {
+        this.levels = levels;
+    }
+
+    @Override
+    protected void displayLogInfo(String msg) {
+        System.out.println("DEBUG LOGGER INFO: " + msg);
+    }
+}// End of the DebugBasedLogger class. 
+```
+
+- Step 4 Create a **ErrorBasedLogger** class.
+
+*File: ErrorBasedLogger.java*
+```java
+public class ErrorBasedLogger extends Logger {
+    public ErrorBasedLogger(int levels) {
+        this.levels = levels;
+    }
+
+    @Override
+    protected void displayLogInfo(String msg) {
+        System.out.println("ERROR LOGGER INFO: " + msg);
+    }
+}// End of the ErrorBasedLogger class.
+```
+
+- Step 5 Create a **ChainOfResponsibilityClient** class.
+
+*File: ChainofResponsibilityClient.java*
+```java
+public class ChainofResponsibilityClient {
+    private static Logger doChaining() {
+        Logger consoleLogger = new ConsoleBasedLogger(Logger.OUTPUTINFO);
+
+        Logger errorLogger = new ErrorBasedLogger(Logger.ERRORINFO);
+        consoleLogger.setNextLevelLogger(errorLogger);
+
+        Logger debugLogger = new DebugBasedLogger(Logger.DEBUGINFO);
+        errorLogger.setNextLevelLogger(debugLogger);
+
+        return consoleLogger;
+    }
+
+    public static void main(String args[]) {
+        Logger chainLogger = doChaining();
+
+        chainLogger.logMessage(Logger.OUTPUTINFO, "Enter the sequence of values ");
+        chainLogger.logMessage(Logger.ERRORINFO, "An error is occured now");
+        chainLogger.logMessage(Logger.DEBUGINFO, "This was the error now debugging is compeled");
+    }
+}
+```
+
+#### [download this example](src/chainofresponsibility.zip)
+
+#### Output
+```java
+bilityClient  
+CONSOLE LOGGER INFO: Enter the sequence of values  
+CONSOLE LOGGER INFO: An error is occured now  
+ERROR LOGGER INFO: An error is occured now  
+CONSOLE LOGGER INFO: This was the error now debugging is compeled  
+ERROR LOGGER INFO: This was the error now debugging is compeled  
+DEBUG LOGGER INFO: This was the error now debugging is compeled  
+```
+
 ### 3.2 Command Pattern
+
+A Command Pattern says that **"encapsulate a request under an object as a command and pass it to invoker object. Invoker object looks for the appropriate object which can handle this command and pass the command to the corresponding object and that object executes the command"**.
+
+It is also known as **Action or Transaction**.
+
+#### Advantage of command pattern
+- It separates the object that invokes the operation from the object that actually performs the operation.
+- It makes easy to add new commands, because existing classes remain unchanged.
+
+#### Usage of command pattern
+
+It is used:
+- When you need parameterize objects according to an action perform.
+- When you need to create and execute requests at different times.
+- When you need to support rollback, logging or transaction functionality.
+
+#### Example of command pattern
+Let's understand the example of adapter design pattern by the above UML diagram.
+
+#### UML for command pattern
+
+##### These are the following participants of the Command Design pattern:
+- **Command** This is an interface for executing an operation.
+- **ConcreteCommand** This class extends the Command interface and implements the execute method. This class creates a binding between the action and the receiver.
+- **Client** This class creates the ConcreteCommand class and associates it with the receiver.
+- **Invoker** This class asks the command to carry out the request.
+- **Receiver** This class knows to perform the operation.
+
+![UML for command pattern](images/commanduml.jpg)
+
+#### Implementation of above UML
+
+- Step 1 Create a **ActionListernerCommand** interface that will act as a Command.
+*File: ActionListenerCommand.java*
+```java
+public interface ActionListenerCommand {  
+    public void execute();  
+} 
+```
+
+- Step 2 Create a Document class that will act as a Receiver.
+*File: Document.java*
+```java
+public class Document {  
+          public void open(){  
+           System.out.println("Document Opened");  
+       }  
+       public void save(){  
+           System.out.println("Document Saved");  
+       }  
+}
+```
+
+Step 3 Create a **ActionOpen** class that will act as an ConcreteCommand.
+
+*File: ActionOpen.java*
+```java
+public class ActionOpen implements ActionListenerCommand{  
+    private Document doc;  
+    public ActionOpen(Document doc) {  
+        this.doc = doc;  
+    }  
+    @Override  
+    public void execute() {  
+        doc.open();  
+    }  
+} 
+```
+
+- Step 4 Create a **ActionSave** class that will act as an ConcreteCommand.
+
+*File: AdapterPatternDemo.java*
+```java
+public class ActionSave implements ActionListenerCommand{  
+   private Document doc;  
+   public ActionSave(Document doc) {  
+        this.doc = doc;  
+    }  
+    @Override  
+    public void execute() {  
+        doc.save();  
+    }  
+} 
+```
+
+- Step 5 Create a **MenuOptions** class that will act as an Invoker.
+
+*File: ActionSave.java*
+```java
+public class ActionSave implements ActionListenerCommand{  
+   private Document doc;  
+    public ActionSave(Document doc) {  
+        this.doc = doc;  
+    }  
+    @Override  
+    public void execute() {  
+        doc.save();  
+    }  
+} 
+```
+
+Step 6 Create a **CommanPatternClient** class that will act as a Client.
+
+*File: AdapterPatternDemo.java*
+```java
+public class CommandPatternClient {  
+    public static void main(String[] args) {  
+        Document doc = new Document();  
+          
+        ActionListenerCommand clickOpen = new ActionOpen(doc);  
+        ActionListenerCommand clickSave = new ActionSave(doc);  
+          
+        MenuOptions menu = new MenuOptions(clickOpen, clickSave);  
+          
+        menu.clickOpen();  
+        menu.clickSave();  
+   }  
+}
+```
+
+#### [download this example](src/commandpattern.zip)
+
+#### Output
+```
+Document Opened  
+Document Saved
+```
+
 ### 3.3 Interpreter Pattern
 ### 3.4 Iterator Pattern
 ### 3.5 Mediator Pattern
