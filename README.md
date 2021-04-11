@@ -1,6 +1,12 @@
 # Java Design Pattern
-1. [ Creational Design Pattern. ](#1-creational-design-pattern)
-2. [ Structural Design Pattern. ](#2-structural-design-pattern)
+# 1. [ Creational Design Pattern. ](#1-creational-design-pattern)
+## 1.1 [ Factory Pattern ](#11-factory-pattern)
+## 1.2 [ Abstract Factory Pattern ](#12-abstract-factory-pattern)
+## 1.3 [ Singleton Pattern ](#13-singleton-pattern)
+## 1.4 [ Prototype Pattern ](#14-prototype-pattern)
+## 1.5 [ Builder Pattern ](#15-builder-pattern)
+# 2. [ Structural Design Pattern. ](#2-structural-design-pattern)
+# 3. [ Behavioral Design Pattern. ](#3-behavioral-design-pattern)
 
 ## 1. Creational Design Pattern
 ### 1.1 Factory Pattern
